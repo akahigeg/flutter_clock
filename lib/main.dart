@@ -73,6 +73,7 @@ class _ClockState extends State<Clock> {
   }
 
   void _countDown(Timer timer) {
+    // TODO: ずれる可能性のある数値ではなく開始時間と現在時間の差分から表示を求める
     int secDown = 0;
     int newMsec = int.parse(_msec) - 1;
     if (newMsec < 0) {
