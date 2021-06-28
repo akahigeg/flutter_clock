@@ -32,22 +32,31 @@ class Clock extends StatefulWidget {
 }
 
 class _ClockState extends State<Clock> {
-  String _time = '';
+  String _min = '99';
+  String _sec = '59';
+  String _msec = '59';
 
   @override
   void initState() {
     Timer.periodic(
-      Duration(seconds: 1),
+      Duration(milliseconds: 1),
       _onTimer,
     );
     super.initState();
   }
 
   void _onTimer(Timer timer) {
-    var now = DateTime.now();
-    var formatter = DateFormat('HH:mm:ss');
-    var formattedTime = formatter.format(now);
-    setState(() => _time = formattedTime);
+    var newMin = _min;
+    setState(() => _min = newMin);
+
+    var newSec = _sec;
+    setState(() => _sec = newSec);
+
+    int newMsec = int.parse(_msec) - 1;
+    if (newMsec < 0) {
+      newMsec = 59;
+    }
+    setState(() => _msec = newMsec.toString());
   }
 
   @override
@@ -61,11 +70,17 @@ class _ClockState extends State<Clock> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Current time:',
+              'Remain time:',
             ),
             Text(
-              '$_time',
+              '$_min:$_sec:$_msec',
               style: Theme.of(context).textTheme.headline4,
+            ),
+            Container(
+              width: 100,
+              height: 50,
+              color: Colors.greenAccent,
+              child: TextButton(child: Text('START'), onPressed: null),
             ),
           ],
         ),
