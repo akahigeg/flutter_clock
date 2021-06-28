@@ -36,6 +36,9 @@ class _ClockState extends State<Clock> {
   String _sec = '59';
   String _msec = '59';
 
+  var _timer;
+  bool _isStart = false;
+
   @override
   void initState() {
     super.initState();
@@ -67,12 +70,33 @@ class _ClockState extends State<Clock> {
     });
   }
 
-  void _startTimer() {
-    Timer.periodic(
-      Duration(milliseconds: 1),
-      _countDown,
-    );
+  void _switchTimer() {
+    setState(() => _isStart = !_isStart);
+    if (_isStart) {
+      _startTimer();
+    } else {
+      _stopTimer();
+    }
   }
+
+  void _startTimer() {
+    setState(() {
+      _timer = Timer.periodic(
+        Duration(milliseconds: 1),
+        _countDown,
+      );
+    });
+  }
+
+  void _stopTimer() {
+    setState(() {
+      _timer.cancel();
+    });
+  }
+
+  // void _resetTimer() {
+
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -109,8 +133,9 @@ class _ClockState extends State<Clock> {
               height: 50,
               margin: EdgeInsets.only(top: 50.0),
               color: Colors.greenAccent,
-              child: TextButton(child: Text('START'), onPressed: _startTimer),
-              // TODO: ボタンを押したらSTART/STOPをトグル
+              child: TextButton(
+                  child: Text(_isStart ? 'STOP' : 'START'),
+                  onPressed: _switchTimer),
             ),
           ],
         ),
