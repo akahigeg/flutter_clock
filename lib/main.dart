@@ -94,9 +94,16 @@ class _ClockState extends State<Clock> {
     });
   }
 
-  // void _resetTimer() {
+  void _resetTimer() {
+    setState(() {
+      _isStart = false;
+      _stopTimer();
 
-  // }
+      _min = '99';
+      _sec = '59';
+      _msec = '59';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,14 +136,30 @@ class _ClockState extends State<Clock> {
               ],
             ),
             Container(
-              width: 100,
-              height: 50,
-              margin: EdgeInsets.only(top: 50.0),
-              color: Colors.greenAccent,
-              child: TextButton(
-                  child: Text(_isStart ? 'STOP' : 'START'),
-                  onPressed: _switchTimer),
-            ),
+                margin: EdgeInsets.only(top: 50.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 50,
+                      margin: EdgeInsets.only(right: 10.0),
+                      color:
+                          _isStart ? Colors.redAccent : Colors.lightGreenAccent,
+                      child: TextButton(
+                          child: Text(_isStart ? 'STOP' : 'START'),
+                          onPressed: _switchTimer),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 50,
+                      margin: EdgeInsets.only(left: 10.0),
+                      color: Colors.greenAccent,
+                      child: TextButton(
+                          child: Text('RESET'), onPressed: _resetTimer),
+                    )
+                  ],
+                )),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
