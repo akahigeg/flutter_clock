@@ -1,6 +1,13 @@
-# flutter_clock
+# Flutter Clock
 
-A new Flutter project.
+A sample Flutter project.
+
+## TODO
+- タイマーのカウントダウン
+- タイマーの追加と編集
+- タイマーの切り替え
+- 広告の仕組みを試す
+- 課金の仕組みを試す
 
 ## Getting Started
 
