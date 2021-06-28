@@ -35,11 +35,16 @@ class Clock extends StatefulWidget {
 class _ClockState extends State<Clock> {
   String _timerId = "timer1";
 
+  int _initialMin = 0; // SharedPreferencesから読む
+  int _initialSec = 0; // SharedPreferencesから読む
+  int _initialMsec = 1000; // 設定できない値なので固定
+
   String _min = '00';
   String _sec = '00';
   String _msec = '00';
 
   var _timer;
+  var _startTime;
   bool _isStart = false;
 
   @override
@@ -56,16 +61,17 @@ class _ClockState extends State<Clock> {
 
   void _initTimer() async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString(_timerId, "99:59:59");
+    prefs.setString(_timerId, "01:00:00");
   }
 
   void _restoreTimer() async {
     var prefs = await SharedPreferences.getInstance();
     var timer = prefs.getString(_timerId) ?? "03:00:00";
     var numbers = timer.toString().split(":");
-    print(timer);
 
     setState(() {
+      _initialMin = int.parse(numbers[0]);
+      _initialSec = int.parse(numbers[1]);
       _min = numbers[0].toString().padLeft(2, '0');
       _sec = numbers[1].toString().padLeft(2, '0');
       _msec = numbers[2].toString().padLeft(2, '0');
@@ -73,30 +79,33 @@ class _ClockState extends State<Clock> {
   }
 
   void _countDown(Timer timer) {
-    // TODO: ずれる可能性のある数値ではなく開始時間と現在時間の差分から表示を求める
-    int secDown = 0;
-    int newMsec = int.parse(_msec) - 1;
-    if (newMsec < 0) {
-      newMsec = 59;
-      secDown = 1;
-    }
+    // 開始時間と現在時間の差分から表示内容を求める
+    var currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-    int minDown = 0;
-    int newSec = int.parse(_sec) - secDown;
-    if (newSec < 0) {
-      newSec = 59;
-      minDown = 1;
-    }
+    // 経過した時間
+    var pastMsec = currentTimestamp - _startTime.millisecondsSinceEpoch;
+    int minusSec = (pastMsec / 1000).ceil();
+    int minusMin = (minusSec / 60).ceil();
 
-    int newMin = int.parse(_min) - minDown;
+    // 表示する時間
+    int newMsec = ((_initialMsec - pastMsec % 1000) ~/ 10).floor();
+    int newSec = ((_initialSec - minusSec) % 60).floor();
+    int newMin = (_initialMin - minusMin);
     if (newMin < 0) {
-      // TODO: minが-1になった時点でタイマー終了
+      // _initialMinが0のとき-1になってしまうことへの対処
+      newMin = 0;
     }
+
     setState(() {
       _msec = newMsec.toString().padLeft(2, '0');
       _sec = newSec.toString().padLeft(2, '0');
       _min = newMin.toString().padLeft(2, '0');
     });
+
+    if (_min == '00' && _sec == '00' && _msec == '00') {
+      // すべての桁が0になったらタイマー終了
+      _finishTimer();
+    }
   }
 
   void _switchTimer() {
@@ -110,6 +119,7 @@ class _ClockState extends State<Clock> {
 
   void _startTimer() {
     setState(() {
+      _startTime = DateTime.now();
       _timer = Timer.periodic(
         Duration(milliseconds: 1),
         _countDown,
@@ -132,6 +142,11 @@ class _ClockState extends State<Clock> {
     });
 
     _restoreTimer();
+  }
+
+  void _finishTimer() {
+    _stopTimer();
+    // TODO: 音ならしたりとか完了処理を入れる
   }
 
   @override
