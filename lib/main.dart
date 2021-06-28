@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,9 +33,11 @@ class Clock extends StatefulWidget {
 }
 
 class _ClockState extends State<Clock> {
-  String _min = '99';
-  String _sec = '59';
-  String _msec = '59';
+  String _timerId = "timer1";
+
+  String _min = '00';
+  String _sec = '00';
+  String _msec = '00';
 
   var _timer;
   bool _isStart = false;
@@ -42,6 +45,31 @@ class _ClockState extends State<Clock> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _restoreTimer();
+
+    super.didChangeDependencies();
+  }
+
+  void _initTimer() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(_timerId, "99:59:59");
+  }
+
+  void _restoreTimer() async {
+    var prefs = await SharedPreferences.getInstance();
+    var timer = prefs.getString(_timerId) ?? "03:00:00";
+    var numbers = timer.toString().split(":");
+    print(timer);
+
+    setState(() {
+      _min = numbers[0].toString().padLeft(2, '0');
+      _sec = numbers[1].toString().padLeft(2, '0');
+      _msec = numbers[2].toString().padLeft(2, '0');
+    });
   }
 
   void _countDown(Timer timer) {
@@ -95,14 +123,14 @@ class _ClockState extends State<Clock> {
   }
 
   void _resetTimer() {
+    _initTimer(); // 仮実装 SharedPreferencesの動作確認のため
+
     setState(() {
       _isStart = false;
       _stopTimer();
-
-      _min = '99';
-      _sec = '59';
-      _msec = '59';
     });
+
+    _restoreTimer();
   }
 
   @override
