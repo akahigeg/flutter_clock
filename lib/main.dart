@@ -48,7 +48,6 @@ class _ClockState extends State<Clock> {
       newMsec = 59;
       secDown = 1;
     }
-    setState(() => _msec = newMsec.toString().padLeft(2, '0'));
 
     int minDown = 0;
     int newSec = int.parse(_sec) - secDown;
@@ -56,13 +55,16 @@ class _ClockState extends State<Clock> {
       newSec = 59;
       minDown = 1;
     }
-    setState(() => _sec = newSec.toString().padLeft(2, '0'));
 
     int newMin = int.parse(_min) - minDown;
     if (newMin < 0) {
       // TODO: minが-1になった時点でタイマー終了
     }
-    setState(() => _min = newMin.toString().padLeft(2, '0'));
+    setState(() {
+      _msec = newMsec.toString().padLeft(2, '0');
+      _sec = newSec.toString().padLeft(2, '0');
+      _min = newMin.toString().padLeft(2, '0');
+    });
   }
 
   void _startTimer() {
