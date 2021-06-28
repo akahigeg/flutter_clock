@@ -52,7 +52,7 @@ class _ClockState extends State<Clock> {
       newMsec = 59;
       secDown = 1;
     }
-    setState(() => _msec = newMsec.toString());
+    setState(() => _msec = newMsec.toString().padLeft(2, '0'));
 
     int minDown = 0;
     int newSec = int.parse(_sec) - secDown;
@@ -60,13 +60,13 @@ class _ClockState extends State<Clock> {
       newSec = 59;
       minDown = 1;
     }
-    setState(() => _sec = newSec.toString());
+    setState(() => _sec = newSec.toString().padLeft(2, '0'));
 
     int newMin = int.parse(_min) - minDown;
     if (newMin < 0) {
-      newSec = 59;
+      // TODO: minが-1になった時点でタイマー終了
     }
-    setState(() => _min = newMin.toString());
+    setState(() => _min = newMin.toString().padLeft(2, '0'));
   }
 
   @override
@@ -82,9 +82,22 @@ class _ClockState extends State<Clock> {
             Text(
               'Remain time:',
             ),
-            Text(
-              '$_min:$_sec:$_msec',
-              style: Theme.of(context).textTheme.headline4,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '$_min:',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Text(
+                  '$_sec:',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                Text(
+                  '$_msec',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ],
             ),
             Container(
               width: 100,
@@ -94,53 +107,6 @@ class _ClockState extends State<Clock> {
             ),
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
