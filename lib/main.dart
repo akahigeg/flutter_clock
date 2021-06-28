@@ -38,10 +38,6 @@ class _ClockState extends State<Clock> {
 
   @override
   void initState() {
-    Timer.periodic(
-      Duration(milliseconds: 1),
-      _onTimer,
-    );
     super.initState();
   }
 
@@ -67,6 +63,13 @@ class _ClockState extends State<Clock> {
       // TODO: minが-1になった時点でタイマー終了
     }
     setState(() => _min = newMin.toString().padLeft(2, '0'));
+  }
+
+  void _startTimer() {
+    Timer.periodic(
+      Duration(milliseconds: 1),
+      _onTimer,
+    );
   }
 
   @override
@@ -104,8 +107,8 @@ class _ClockState extends State<Clock> {
               height: 50,
               margin: EdgeInsets.only(top: 50.0),
               color: Colors.greenAccent,
-              child: TextButton(child: Text('START'), onPressed: null),
-              // TODO: ボタンを押したらカウントダウンを開始する
+              child: TextButton(child: Text('START'), onPressed: _startTimer),
+              // TODO: ボタンを押したらSTART/STOPをトグル
             ),
           ],
         ),
