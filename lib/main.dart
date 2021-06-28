@@ -102,8 +102,10 @@ class _ClockState extends State<Clock> {
             Container(
               width: 100,
               height: 50,
+              margin: EdgeInsets.only(top: 50.0),
               color: Colors.greenAccent,
               child: TextButton(child: Text('START'), onPressed: null),
+              // TODO: ボタンを押したらカウントダウンを開始する
             ),
           ],
         ),
