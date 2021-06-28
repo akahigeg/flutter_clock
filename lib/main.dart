@@ -46,17 +46,27 @@ class _ClockState extends State<Clock> {
   }
 
   void _onTimer(Timer timer) {
-    var newMin = _min;
-    setState(() => _min = newMin);
-
-    var newSec = _sec;
-    setState(() => _sec = newSec);
-
+    int secDown = 0;
     int newMsec = int.parse(_msec) - 1;
     if (newMsec < 0) {
       newMsec = 59;
+      secDown = 1;
     }
     setState(() => _msec = newMsec.toString());
+
+    int minDown = 0;
+    int newSec = int.parse(_sec) - secDown;
+    if (newSec < 0) {
+      newSec = 59;
+      minDown = 1;
+    }
+    setState(() => _sec = newSec.toString());
+
+    int newMin = int.parse(_min) - minDown;
+    if (newMin < 0) {
+      newSec = 59;
+    }
+    setState(() => _min = newMin.toString());
   }
 
   @override
