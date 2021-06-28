@@ -41,7 +41,7 @@ class _ClockState extends State<Clock> {
     super.initState();
   }
 
-  void _onTimer(Timer timer) {
+  void _countDown(Timer timer) {
     int secDown = 0;
     int newMsec = int.parse(_msec) - 1;
     if (newMsec < 0) {
@@ -70,7 +70,7 @@ class _ClockState extends State<Clock> {
   void _startTimer() {
     Timer.periodic(
       Duration(milliseconds: 1),
-      _onTimer,
+      _countDown,
     );
   }
 
