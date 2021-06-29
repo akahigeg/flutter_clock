@@ -160,7 +160,7 @@ class _ClockState extends State<Clock> {
   Widget displayTimer() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         Text(
           '$_min:',
           style: Theme.of(context).textTheme.headline4,
@@ -182,7 +182,7 @@ class _ClockState extends State<Clock> {
         margin: EdgeInsets.only(top: 50.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Container(
               width: 100,
               height: 50,
