@@ -149,47 +149,55 @@ class _ClockState extends State<Clock> {
             Text(
               'Remain time:',
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '$_min:',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Text(
-                  '$_sec:',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Text(
-                  '$_msec',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 50.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 50,
-                      margin: EdgeInsets.only(right: 10.0),
-                      color: _isStart ? Colors.redAccent : Colors.lightGreenAccent,
-                      child: TextButton(child: Text(_isStart ? 'STOP' : 'START'), onPressed: _switchTimer),
-                    ),
-                    Container(
-                      width: 100,
-                      height: 50,
-                      margin: EdgeInsets.only(left: 10.0),
-                      color: Colors.greenAccent,
-                      child: TextButton(child: Text('RESET'), onPressed: _resetTimer),
-                    )
-                  ],
-                )),
+            displayTimer(),
+            buttons(),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Widget displayTimer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '$_min:',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        Text(
+          '$_sec:',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        Text(
+          '$_msec',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+      ],
+    );
+  }
+
+  Widget buttons() {
+    return Container(
+        margin: EdgeInsets.only(top: 50.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(right: 10.0),
+              color: _isStart ? Colors.redAccent : Colors.lightGreenAccent,
+              child: TextButton(child: Text(_isStart ? 'STOP' : 'START'), onPressed: _switchTimer),
+            ),
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(left: 10.0),
+              color: Colors.greenAccent,
+              child: TextButton(child: Text('RESET'), onPressed: _resetTimer),
+            )
+          ],
+        ));
   }
 }
