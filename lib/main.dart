@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Clock',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Clock(title: 'Flutter Demo Home Page'),
+      home: Clock(title: 'Flutter Clock'),
     );
   }
 }
@@ -188,19 +188,15 @@ class _ClockState extends State<Clock> {
                       width: 100,
                       height: 50,
                       margin: EdgeInsets.only(right: 10.0),
-                      color:
-                          _isStart ? Colors.redAccent : Colors.lightGreenAccent,
-                      child: TextButton(
-                          child: Text(_isStart ? 'STOP' : 'START'),
-                          onPressed: _switchTimer),
+                      color: _isStart ? Colors.redAccent : Colors.lightGreenAccent,
+                      child: TextButton(child: Text(_isStart ? 'STOP' : 'START'), onPressed: _switchTimer),
                     ),
                     Container(
                       width: 100,
                       height: 50,
                       margin: EdgeInsets.only(left: 10.0),
                       color: Colors.greenAccent,
-                      child: TextButton(
-                          child: Text('RESET'), onPressed: _resetTimer),
+                      child: TextButton(child: Text('RESET'), onPressed: _resetTimer),
                     )
                   ],
                 )),
