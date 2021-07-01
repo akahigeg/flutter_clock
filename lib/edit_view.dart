@@ -89,7 +89,14 @@ class _EditViewState extends State<EditView> {
             '$_min',
             style: Theme.of(context).textTheme.headline4,
           ),
-          Icon(Icons.arrow_drop_down),
+          ElevatedButton(
+              child: Icon(Icons.arrow_drop_down),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+              ),
+              onPressed: () {
+                _changeMin("down");
+              }),
         ]),
         Text(
           ':',
