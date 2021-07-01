@@ -32,6 +32,11 @@ class _EditViewState extends State<EditView> {
     super.didChangeDependencies();
   }
 
+  void _updateTimer() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(_timerId, "$_min:$_sec:$_msec");
+  }
+
   void _restoreTimer() async {
     var prefs = await SharedPreferences.getInstance();
     var timer = prefs.getString(_timerId) ?? "03:00:00";
@@ -55,6 +60,9 @@ class _EditViewState extends State<EditView> {
       _min = newMin.toString().padLeft(2, '0');
     });
   }
+  // TODO: 上限と下限の制限を入れる
+  // secのアップデート
+  // msecは編集画面からは消す
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +148,9 @@ class _EditViewState extends State<EditView> {
               child: TextButton(
                   child: Text('SAVE'),
                   onPressed: () {
+                    _updateTimer();
                     Navigator.pop(context);
+                    // TODO: 戻った時に再描画 https://flutter.dev/docs/cookbook/navigation/returning-data
                   }),
             ),
             Container(

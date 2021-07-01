@@ -42,11 +42,6 @@ class _ClockState extends State<Clock> {
     super.didChangeDependencies();
   }
 
-  void _initTimer() async {
-    var prefs = await SharedPreferences.getInstance();
-    prefs.setString(_timerId, "01:00:00");
-  }
-
   void _restoreTimer() async {
     var prefs = await SharedPreferences.getInstance();
     var timer = prefs.getString(_timerId) ?? "03:00:00";
@@ -117,8 +112,6 @@ class _ClockState extends State<Clock> {
   }
 
   void _resetTimer() {
-    _initTimer(); // 仮実装 SharedPreferencesの動作確認のため
-
     setState(() {
       _isStart = false;
       _stopTimer();
@@ -173,6 +166,7 @@ class _ClockState extends State<Clock> {
           '$_msec',
           style: Theme.of(context).textTheme.headline4,
         ),
+        // TODO: msecのサイズ小さく
       ],
     );
   }
