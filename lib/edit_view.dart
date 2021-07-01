@@ -79,6 +79,9 @@ class _EditViewState extends State<EditView> {
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
               child: Icon(Icons.arrow_drop_up),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+              ),
               onPressed: () {
                 _changeMin("up");
               }),
