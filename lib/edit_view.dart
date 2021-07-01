@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'dart:async';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditView extends StatefulWidget {
   EditView({Key? key, required this.title}) : super(key: key);
@@ -14,9 +14,46 @@ class EditView extends StatefulWidget {
 }
 
 class _EditViewState extends State<EditView> {
+  String _timerId = "timer1";
+
+  String _min = '00';
+  String _sec = '00';
+  String _msec = '00';
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _restoreTimer();
+
+    super.didChangeDependencies();
+  }
+
+  void _restoreTimer() async {
+    var prefs = await SharedPreferences.getInstance();
+    var timer = prefs.getString(_timerId) ?? "03:00:00";
+    var numbers = timer.toString().split(":");
+
+    setState(() {
+      _min = numbers[0].toString().padLeft(2, '0');
+      _sec = numbers[1].toString().padLeft(2, '0');
+      _msec = numbers[2].toString().padLeft(2, '0');
+    });
+  }
+
+  void _changeMin(String upOrDown) {
+    int newMin;
+    if (upOrDown == 'up') {
+      newMin = int.parse(_min) + 1;
+    } else {
+      newMin = int.parse(_min) - 1;
+    }
+    setState(() {
+      _min = newMin.toString().padLeft(2, '0');
+    });
   }
 
   @override
@@ -28,9 +65,54 @@ class _EditViewState extends State<EditView> {
       body: Center(
         child: Column(children: [
           Text("hoge"),
+          displayTimer(),
           buttons(context),
         ]),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget displayTimer() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ElevatedButton(
+              child: Icon(Icons.arrow_drop_up),
+              onPressed: () {
+                _changeMin("up");
+              }),
+          Text(
+            '$_min',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Icon(Icons.arrow_drop_down),
+        ]),
+        Text(
+          ':',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(Icons.arrow_drop_up),
+          Text(
+            '$_sec',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Icon(Icons.arrow_drop_down),
+        ]),
+        Text(
+          ':',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(Icons.arrow_drop_up),
+          Text(
+            '$_msec',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Icon(Icons.arrow_drop_down),
+        ]),
+      ],
     );
   }
 

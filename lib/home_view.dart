@@ -149,7 +149,7 @@ class _ClockState extends State<Clock> {
             Text(
               'Remain time:',
             ),
-            displayTimer(),
+            displayTimer(context),
             buttons(),
           ],
         ),
@@ -157,7 +157,7 @@ class _ClockState extends State<Clock> {
     );
   }
 
-  Widget displayTimer() {
+  Widget displayTimer(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
