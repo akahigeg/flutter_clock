@@ -26,15 +26,43 @@ class _EditViewState extends State<EditView> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Edit:',
-            ),
-          ],
-        ),
+        child: Column(children: [
+          Text("hoge"),
+          buttons(context),
+        ]),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Widget buttons(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: 50.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(right: 10.0),
+              color: Colors.lightGreenAccent,
+              child: TextButton(
+                  child: Text('SAVE'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+            ),
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(left: 10.0),
+              color: Colors.redAccent,
+              child: TextButton(
+                  child: Text('CANCEL'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+            ),
+          ],
+        ));
   }
 }

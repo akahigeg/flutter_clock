@@ -8,6 +8,7 @@ A sample Flutter project.
 - タイマーの切り替え
 - 広告の仕組みを試す
 - 課金の仕組みを試す
+- スプラッシュスクリーン
 
 ## Getting Started
 
