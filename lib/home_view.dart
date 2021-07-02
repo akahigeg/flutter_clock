@@ -67,16 +67,19 @@ class _ClockState extends State<Clock> {
     // 経過した時間
     var pastMsec = currentTimestamp - _startTime.millisecondsSinceEpoch;
     int minusSec = (pastMsec / 1000).ceil();
-    int minusMin = (minusSec / 60).ceil();
+    // タイマーが1:03で1秒経過した時も0:02になってしまう。3秒経過で1:00 4秒経過で0:59になってほしい
+    // タイマーが1:13で1秒経過した時も0:12になってしまう。13秒経過で1:00 14秒経過で0:59になってほしい
+    int minusMin;
+    if (minusSec % 60 > _initialSec) {
+      minusMin = (minusSec / 60).ceil();
+    } else {
+      minusMin = (minusSec / 60).floor();
+    }
 
     // 表示する時間
     int newMsec = ((_initialMsec - pastMsec % 1000) ~/ 10).floor();
     int newSec = ((_initialSec - minusSec) % 60).floor();
     int newMin = (_initialMin - minusMin);
-    if (newMin < 0) {
-      // _initialMinが0のとき-1になってしまうことへの対処
-      newMin = 0;
-    }
 
     setState(() {
       _msec = newMsec.toString().padLeft(2, '0');
@@ -188,18 +191,19 @@ class _ClockState extends State<Clock> {
   Widget displayTimer(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Text(
-          '$_min:',
+          '$_min',
           style: Theme.of(context).textTheme.headline4,
         ),
         Text(
-          '$_sec:',
+          ':$_sec',
           style: Theme.of(context).textTheme.headline4,
         ),
         Text(
-          '$_msec',
-          style: Theme.of(context).textTheme.headline4,
+          ':$_msec',
+          style: Theme.of(context).textTheme.headline5,
         ),
         // TODO: msecのサイズ小さく
       ],
