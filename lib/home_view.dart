@@ -29,6 +29,7 @@ class _ClockState extends State<Clock> {
   var _timer;
   var _startTime;
   bool _isStart = false;
+  bool _inEdit = false;
 
   @override
   void initState() {
@@ -142,8 +143,8 @@ class _ClockState extends State<Clock> {
             Text(
               'Remain time:',
             ),
-            displayTimer(context),
-            buttons(),
+            _inEdit ? displayEdit(context) : displayTimer(context),
+            _inEdit ? inEditButtons() : buttons(),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -160,6 +161,27 @@ class _ClockState extends State<Clock> {
         ),
         Text(
           '$_sec:',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        Text(
+          '$_msec',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        // TODO: msecのサイズ小さく
+      ],
+    );
+  }
+
+  Widget displayEdit(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          '$_min:!',
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        Text(
+          '$_sec:!',
           style: Theme.of(context).textTheme.headline4,
         ),
         Text(
@@ -190,8 +212,44 @@ class _ClockState extends State<Clock> {
               margin: EdgeInsets.only(left: 10.0),
               color: Colors.greenAccent,
               child: TextButton(child: Text('RESET'), onPressed: _resetTimer),
+            ),
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(left: 10.0),
+              color: Colors.greenAccent,
+              child: TextButton(child: Text('EDIT'), onPressed: _startEdit),
             )
           ],
         ));
+  }
+
+  Widget inEditButtons() {
+    return Container(
+        margin: EdgeInsets.only(top: 50.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(left: 10.0),
+              color: Colors.greenAccent,
+              child: TextButton(child: Text('DONE'), onPressed: _finishEdit),
+            )
+          ],
+        ));
+  }
+
+  _startEdit() {
+    setState(() {
+      _inEdit = true;
+    });
+  }
+
+  _finishEdit() {
+    setState(() {
+      _inEdit = false;
+    });
   }
 }
