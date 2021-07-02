@@ -14,6 +14,24 @@ class Clock extends StatefulWidget {
   }
 }
 
+// Stateを末端に追いやるテスト
+class ClockTip extends StatefulWidget {
+  ClockTip({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ClockTipState();
+  }
+}
+
+class _ClockTipState extends State<ClockTip> {
+  Widget build(BuildContext context) {
+    return Text(
+      'Tip State',
+    );
+  }
+}
+
 class _ClockState extends State<Clock> {
   String _timerId = "timer1";
 
@@ -177,6 +195,7 @@ class _ClockState extends State<Clock> {
             ),
             _inEdit ? displayEdit(context) : displayTimer(context),
             _inEdit ? inEditButtons() : buttons(),
+            ClockTip(),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
