@@ -33,11 +33,6 @@ class _ClockState extends State<Clock> {
   AudioCache _player = AudioCache();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     _restoreTimer();
 
