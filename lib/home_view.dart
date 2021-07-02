@@ -26,6 +26,40 @@ class ClockTip extends StatelessWidget {
   }
 }
 
+class ClockEditor {
+  static String changeMin(String min, String upOrDown) {
+    int newMin;
+    if (upOrDown == 'up') {
+      newMin = int.parse(min) + 1;
+    } else {
+      newMin = int.parse(min) - 1;
+    }
+    if (newMin == 100) {
+      newMin = 0;
+    }
+    if (newMin == -1) {
+      newMin = 99;
+    }
+    return newMin.toString().padLeft(2, '0');
+  }
+
+  static String changeSec(String sec, String upOrDown) {
+    int newSec;
+    if (upOrDown == 'up') {
+      newSec = int.parse(sec) + 1;
+    } else {
+      newSec = int.parse(sec) - 1;
+    }
+    if (newSec == 60) {
+      newSec = 0;
+    }
+    if (newSec == -1) {
+      newSec = 59;
+    }
+    return newSec.toString().padLeft(2, '0');
+  }
+}
+
 class _ClockState extends State<Clock> {
   String _timerId = "timer1";
 
@@ -140,42 +174,6 @@ class _ClockState extends State<Clock> {
     // TODO: 完了処理を入れる
   }
 
-  void _changeMin(String upOrDown) {
-    int newMin;
-    if (upOrDown == 'up') {
-      newMin = int.parse(_min) + 1;
-    } else {
-      newMin = int.parse(_min) - 1;
-    }
-    if (newMin == 100) {
-      newMin = 0;
-    }
-    if (newMin == -1) {
-      newMin = 99;
-    }
-    setState(() {
-      _min = newMin.toString().padLeft(2, '0');
-    });
-  }
-
-  void _changeSec(String upOrDown) {
-    int newSec;
-    if (upOrDown == 'up') {
-      newSec = int.parse(_sec) + 1;
-    } else {
-      newSec = int.parse(_sec) - 1;
-    }
-    if (newSec == 60) {
-      newSec = 0;
-    }
-    if (newSec == -1) {
-      newSec = 59;
-    }
-    setState(() {
-      _sec = newSec.toString().padLeft(2, '0');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,15 +218,19 @@ class _ClockState extends State<Clock> {
 
   Widget upDownButton(BuildContext context, String upOrDown, String minOrSec) {
     return ElevatedButton(
-        child: Icon(Icons.arrow_drop_up),
+        child: Icon(upOrDown == "up" ? Icons.arrow_drop_up : Icons.arrow_drop_down),
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
         ),
         onPressed: () {
           if (minOrSec == "min") {
-            _changeMin(upOrDown);
+            setState(() {
+              _min = ClockEditor.changeMin(_min, upOrDown);
+            });
           } else {
-            _changeSec(upOrDown);
+            setState(() {
+              _sec = ClockEditor.changeSec(_sec, upOrDown);
+            });
           }
         });
   }
@@ -315,17 +317,17 @@ class _ClockState extends State<Clock> {
   }
 
   _startEdit() {
-    _resetTimer();
     setState(() {
       _inEdit = true;
     });
+    _resetTimer();
   }
 
   _finishEdit() {
     _updateTimer();
-    _resetTimer();
     setState(() {
       _inEdit = false;
     });
+    _resetTimer();
   }
 }
