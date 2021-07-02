@@ -55,6 +55,8 @@ class _ClockState extends State<Clock> {
       _sec = numbers[1].toString().padLeft(2, '0');
       _msec = numbers[2].toString().padLeft(2, '0');
     });
+
+    _updateTimer();
   }
 
   void _countDown(Timer timer) {
@@ -126,6 +128,21 @@ class _ClockState extends State<Clock> {
     // TODO: 音ならしたりとか完了処理を入れる
   }
 
+  void _changeMin(String upOrDown) {
+    int newMin;
+    if (upOrDown == 'up') {
+      newMin = int.parse(_min) + 1;
+    } else {
+      newMin = int.parse(_min) - 1;
+    }
+    setState(() {
+      _min = newMin.toString().padLeft(2, '0');
+    });
+  }
+  // TODO: 上限と下限の制限を入れる
+  // secのアップデート
+  // msecは編集画面からは消す
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,19 +193,52 @@ class _ClockState extends State<Clock> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ElevatedButton(
+              child: Icon(Icons.arrow_drop_up),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+              ),
+              onPressed: () {
+                _changeMin("up");
+              }),
+          Text(
+            '$_min',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          ElevatedButton(
+              child: Icon(Icons.arrow_drop_down),
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+              ),
+              onPressed: () {
+                _changeMin("down");
+              }),
+        ]),
         Text(
-          '$_min:!',
+          ':',
           style: Theme.of(context).textTheme.headline4,
         ),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(Icons.arrow_drop_up),
+          Text(
+            '$_sec',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Icon(Icons.arrow_drop_down),
+        ]),
         Text(
-          '$_sec:!',
+          ':',
           style: Theme.of(context).textTheme.headline4,
         ),
-        Text(
-          '$_msec',
-          style: Theme.of(context).textTheme.headline4,
-        ),
-        // TODO: msecのサイズ小さく
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Icon(Icons.arrow_drop_up),
+          Text(
+            '$_msec',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Icon(Icons.arrow_drop_down),
+        ]),
       ],
     );
   }
@@ -241,13 +291,21 @@ class _ClockState extends State<Clock> {
         ));
   }
 
+  void _updateTimer() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(_timerId, "$_min:$_sec:$_msec");
+  }
+
   _startEdit() {
+    _restoreTimer();
     setState(() {
       _inEdit = true;
     });
   }
 
   _finishEdit() {
+    _updateTimer();
+    _restoreTimer();
     setState(() {
       _inEdit = false;
     });
