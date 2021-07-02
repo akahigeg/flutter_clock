@@ -58,6 +58,8 @@ class _ClockState extends State<Clock> {
     var timer = prefs.getString(_timerId) ?? "03:00:00";
     var numbers = timer.toString().split(":");
 
+    print("call restoreTimer");
+
     setState(() {
       _initialMin = int.parse(numbers[0]);
       _initialSec = int.parse(numbers[1]);
@@ -112,6 +114,7 @@ class _ClockState extends State<Clock> {
   }
 
   void _startTimer() {
+    // TODO: 中断したタイマーの再開 今はSTOPしてからSTARTするとまた最初からのカウントになる
     setState(() {
       _startTime = DateTime.now();
       _timer = Timer.periodic(
@@ -122,22 +125,22 @@ class _ClockState extends State<Clock> {
   }
 
   void _stopTimer() {
-    setState(() {
-      _timer.cancel();
-    });
+    _timer.cancel(); // _switchTimer以外から_stopTimerを呼び出すとなぜかバグる
   }
 
   void _resetTimer() {
     setState(() {
       _isStart = false;
-      _stopTimer();
     });
+    _timer.cancel();
 
+    // _stopTimer();
     _restoreTimer();
   }
 
   void _finishTimer() {
-    _stopTimer();
+    _timer.cancel();
+    // _stopTimer();
     _player.play('warn.mp3');
     // TODO: 完了処理を入れる
   }
@@ -154,7 +157,7 @@ class _ClockState extends State<Clock> {
               'Remain time:',
             ),
             _inEdit ? displayEdit(context) : displayTimer(context),
-            _inEdit ? inEditButtons() : buttons(),
+            _inEdit ? inEditButtons(context) : buttons(context),
             ClockTip(),
           ],
         ),
@@ -231,7 +234,7 @@ class _ClockState extends State<Clock> {
     );
   }
 
-  Widget buttons() {
+  Widget buttons(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(top: 50.0),
         child: Row(
@@ -262,7 +265,7 @@ class _ClockState extends State<Clock> {
         ));
   }
 
-  Widget inEditButtons() {
+  Widget inEditButtons(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(top: 50.0),
         child: Row(
@@ -274,6 +277,13 @@ class _ClockState extends State<Clock> {
               margin: EdgeInsets.only(left: 10.0),
               color: Colors.greenAccent,
               child: TextButton(child: Text('DONE'), onPressed: _finishEdit),
+            ),
+            Container(
+              width: 100,
+              height: 50,
+              margin: EdgeInsets.only(left: 10.0),
+              color: Colors.greenAccent,
+              child: TextButton(child: Text('CANCEL'), onPressed: _cancelEdit),
             )
           ],
         ));
@@ -293,6 +303,13 @@ class _ClockState extends State<Clock> {
 
   _finishEdit() {
     _updateTimer();
+    setState(() {
+      _inEdit = false;
+    });
+    _resetTimer();
+  }
+
+  _cancelEdit() {
     setState(() {
       _inEdit = false;
     });
