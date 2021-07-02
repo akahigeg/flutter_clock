@@ -41,6 +41,8 @@ class _ClockState extends State<Clock> {
 
   var _timer;
   var _startTime;
+  var _lastStopTime;
+  var _stoppedMilliseconds = 0; // 中断時間の合計
   bool _isStart = false;
   bool _inEdit = false;
 
@@ -76,7 +78,7 @@ class _ClockState extends State<Clock> {
     var currentTimestamp = DateTime.now().millisecondsSinceEpoch;
 
     // 経過した時間
-    var pastMsec = currentTimestamp - _startTime.millisecondsSinceEpoch;
+    var pastMsec = currentTimestamp - _startTime.millisecondsSinceEpoch - _stoppedMilliseconds;
     int minusSec = (pastMsec / 1000).ceil();
     // タイマーが1:03で1秒経過した時も0:02になってしまう。3秒経過で1:00 4秒経過で0:59になってほしい
     // タイマーが1:13で1秒経過した時も0:12になってしまう。13秒経過で1:00 14秒経過で0:59になってほしい
@@ -114,9 +116,22 @@ class _ClockState extends State<Clock> {
   }
 
   void _startTimer() {
-    // TODO: 中断したタイマーの再開 今はSTOPしてからSTARTするとまた最初からのカウントになる
+    if (_lastStopTime == null) {
+      // 新しいタイマーの開始
+      setState(() {
+        _startTime = DateTime.now();
+      });
+    } else {
+      // 中断したタイマーの再開
+      setState(() {
+        _stoppedMilliseconds = (DateTime.now().millisecondsSinceEpoch - _lastStopTime.millisecondsSinceEpoch).toInt() + _stoppedMilliseconds;
+      });
+      print(_lastStopTime.millisecondsSinceEpoch);
+      print(DateTime.now().millisecondsSinceEpoch);
+      print(_stoppedMilliseconds);
+    }
+
     setState(() {
-      _startTime = DateTime.now();
       _timer = Timer.periodic(
         Duration(milliseconds: 1),
         _countDown,
@@ -125,12 +140,18 @@ class _ClockState extends State<Clock> {
   }
 
   void _stopTimer() {
+    // 中断したタイマーの再開ができるように停めた時間を記録
+    setState(() {
+      _lastStopTime = DateTime.now();
+    });
     _timer.cancel(); // _switchTimer以外から_stopTimerを呼び出すとなぜかバグる
   }
 
   void _resetTimer() {
     setState(() {
       _isStart = false;
+      _lastStopTime = null;
+      _stoppedMilliseconds = 0;
     });
     _timer.cancel();
 
