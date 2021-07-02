@@ -4,7 +4,8 @@ A sample Flutter project.
 
 ## TODO
 - [DONE] タイマーのカウントダウン
-- タイマーの追加と編集
+- [DONE] タイマーの編集
+- タイマーの追加
 - タイマーの切り替え
 - 広告の仕組みを試す
 - 課金の仕組みを試す
@@ -22,3 +23,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Thanks
+- [効果音ラボ](https://soundeffect-lab.info/)

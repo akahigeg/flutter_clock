@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import './edit_view.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Clock extends StatefulWidget {
   Clock({Key? key, required this.title}) : super(key: key);
@@ -30,6 +29,8 @@ class _ClockState extends State<Clock> {
   var _startTime;
   bool _isStart = false;
   bool _inEdit = false;
+
+  AudioCache _player = AudioCache();
 
   @override
   void initState() {
@@ -125,7 +126,8 @@ class _ClockState extends State<Clock> {
 
   void _finishTimer() {
     _stopTimer();
-    // TODO: 音ならしたりとか完了処理を入れる
+    _player.play('warn.mp3');
+    // TODO: 完了処理を入れる
   }
 
   void _changeMin(String upOrDown) {
