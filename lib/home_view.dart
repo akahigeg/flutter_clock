@@ -194,15 +194,15 @@ class _ClockState extends State<Clock> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Text(
-          '$_min',
+          '$_min:',
           style: Theme.of(context).textTheme.headline4,
         ),
         Text(
-          ':$_sec',
+          '$_sec:',
           style: Theme.of(context).textTheme.headline4,
         ),
         Text(
-          ':$_msec',
+          '$_msec',
           style: Theme.of(context).textTheme.headline5,
         ),
         // TODO: msecのサイズ小さく
@@ -303,11 +303,11 @@ class _ClockState extends State<Clock> {
 
   void _updateTimer() async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString(_timerId, "$_min:$_sec:$_msec");
+    prefs.setString(_timerId, "$_min:$_sec:00");
   }
 
   _startEdit() {
-    _restoreTimer();
+    _resetTimer();
     setState(() {
       _inEdit = true;
     });
@@ -315,7 +315,7 @@ class _ClockState extends State<Clock> {
 
   _finishEdit() {
     _updateTimer();
-    _restoreTimer();
+    _resetTimer();
     setState(() {
       _inEdit = false;
     });
