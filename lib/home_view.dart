@@ -15,19 +15,13 @@ class Clock extends StatefulWidget {
 }
 
 // Stateを末端に追いやるテスト
-class ClockTip extends StatefulWidget {
-  ClockTip({Key? key}) : super(key: key);
+class ClockTip extends StatelessWidget {
+  ClockTip();
 
   @override
-  State<StatefulWidget> createState() {
-    return _ClockTipState();
-  }
-}
-
-class _ClockTipState extends State<ClockTip> {
   Widget build(BuildContext context) {
     return Text(
-      'Tip State',
+      'Tip Stateless',
     );
   }
 }
