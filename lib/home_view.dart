@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 
 import './clock_editor.dart';
 
@@ -46,7 +46,7 @@ class _ClockState extends State<Clock> {
   bool _isStart = false;
   bool _inEdit = false;
 
-  AudioCache _player = AudioCache();
+  // AudioCache _player = AudioCache();
 
   @override
   void didChangeDependencies() {
@@ -162,7 +162,7 @@ class _ClockState extends State<Clock> {
   void _finishTimer() {
     _timer.cancel();
     // _stopTimer();
-    _player.play('warn.mp3');
+    // _player.play('warn.mp3'); Androidでビルドできないのでk
     // TODO: 完了処理を入れる
   }
 
@@ -224,6 +224,19 @@ class _ClockState extends State<Clock> {
               _sec = ClockEditor.changeSec(_sec, upOrDown);
             });
           }
+        },
+        // TODO: 長押し 以下のコードでなぜか動かない
+        onLongPress: () {
+          print("longpress");
+          if (minOrSec == "min") {
+            setState(() {
+              _min = ClockEditor.changeMin(_min, upOrDown);
+            });
+          } else {
+            setState(() {
+              _sec = ClockEditor.changeSec(_sec, upOrDown);
+            });
+          }
         });
   }
 
@@ -266,6 +279,7 @@ class _ClockState extends State<Clock> {
               height: 50,
               margin: EdgeInsets.only(right: 10.0),
               color: _isStart ? Colors.redAccent : Colors.lightGreenAccent,
+              // TODO: 00:00:00の場合はSTARTを押せないように
               child: TextButton(child: Text(_isStart ? 'STOP' : 'START'), onPressed: _switchTimer),
             ),
             Container(
