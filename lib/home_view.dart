@@ -167,13 +167,7 @@ class _ClockState extends State<Clock> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
-        IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => EditView(title: 'Edit')));
-            })
-      ]),
+      appBar: AppBar(title: Text(widget.title), actions: <Widget>[]),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
