@@ -135,13 +135,34 @@ class _ClockState extends State<Clock> {
     } else {
       newMin = int.parse(_min) - 1;
     }
+    if (newMin == 100) {
+      newMin = 0;
+    }
+    if (newMin == -1) {
+      newMin = 99;
+    }
     setState(() {
       _min = newMin.toString().padLeft(2, '0');
     });
   }
-  // TODO: 上限と下限の制限を入れる
-  // secのアップデート
-  // msecは編集画面からは消す
+
+  void _changeSec(String upOrDown) {
+    int newSec;
+    if (upOrDown == 'up') {
+      newSec = int.parse(_sec) + 1;
+    } else {
+      newSec = int.parse(_sec) - 1;
+    }
+    if (newSec == 60) {
+      newSec = 0;
+    }
+    if (newSec == -1) {
+      newSec = 59;
+    }
+    setState(() {
+      _sec = newSec.toString().padLeft(2, '0');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -189,55 +210,44 @@ class _ClockState extends State<Clock> {
     );
   }
 
+  Widget upDownButton(BuildContext context, String upOrDown, String minOrSec) {
+    return ElevatedButton(
+        child: Icon(Icons.arrow_drop_up),
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+        ),
+        onPressed: () {
+          if (minOrSec == "min") {
+            _changeMin(upOrDown);
+          } else {
+            _changeSec(upOrDown);
+          }
+        });
+  }
+
   Widget displayEdit(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
-              child: Icon(Icons.arrow_drop_up),
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-              ),
-              onPressed: () {
-                _changeMin("up");
-              }),
+          upDownButton(context, "up", "min"),
           Text(
             '$_min',
             style: Theme.of(context).textTheme.headline4,
           ),
-          ElevatedButton(
-              child: Icon(Icons.arrow_drop_down),
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-              ),
-              onPressed: () {
-                _changeMin("down");
-              }),
+          upDownButton(context, "down", "min"),
         ]),
         Text(
           ':',
           style: Theme.of(context).textTheme.headline4,
         ),
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(Icons.arrow_drop_up),
+          upDownButton(context, "up", "sec"),
           Text(
             '$_sec',
             style: Theme.of(context).textTheme.headline4,
           ),
-          Icon(Icons.arrow_drop_down),
-        ]),
-        Text(
-          ':',
-          style: Theme.of(context).textTheme.headline4,
-        ),
-        Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(Icons.arrow_drop_up),
-          Text(
-            '$_msec',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          Icon(Icons.arrow_drop_down),
+          upDownButton(context, "down", "sec"),
         ]),
       ],
     );
