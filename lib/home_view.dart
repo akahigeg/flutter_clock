@@ -280,7 +280,7 @@ class _ClockState extends State<Clock> {
               margin: EdgeInsets.only(right: 10.0),
               color: _isStart ? Colors.redAccent : Colors.lightGreenAccent,
               // TODO: 00:00:00の場合はSTARTを押せないように
-              child: TextButton(child: Text(_isStart ? 'STOP' : 'START'), onPressed: _switchTimer),
+              child: TextButton(child: Text(_isStart ? 'STOP' : 'START'), onPressed: _switchTimer, key: Key("start_stop")),
             ),
             Container(
               width: 100,

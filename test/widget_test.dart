@@ -18,7 +18,8 @@ void main() {
       expect(find.text('START'), findsOneWidget);
 
       // STARTボタンをタップ
-      await tester.tap(find.widgetWithText(TextButton, "START"));
+      // await tester.tap(find.widgetWithText(TextButton, "START"));
+      await tester.tap(find.byKey(Key("start_stop")));
       await tester.pump(new Duration(seconds: 1)); // タップした後1秒待つ
 
       expect(find.text('STOP'), findsOneWidget);
