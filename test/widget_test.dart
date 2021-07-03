@@ -11,27 +11,44 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_clock/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('toggle START and STOP button', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.runAsync(() async {
       await tester.pumpWidget(MyApp());
-      expect(find.text('Flutter Clock'), findsOneWidget);
-      expect(find.text('Remain time:'), findsOneWidget);
       expect(find.text('START'), findsOneWidget);
 
-      // Verify that our counter starts at 0.
-      // expect(find.text('03:'), findsOneWidget);
-      // expect(find.text('02:'), findsNothing);
-
-      // Tap the '+' icon and trigger a frame.
+      // STARTボタンをタップ
       await tester.tap(find.widgetWithText(TextButton, "START"));
-      await tester.pump();
+      await tester.pump(new Duration(seconds: 1)); // タップした後1秒待つ
 
       expect(find.text('STOP'), findsOneWidget);
 
-      // Verify that our counter has incremented.
-      // expect(find.text('03:'), findsNothing);
-      // expect(find.text('02:'), findsOneWidget);
+      await tester.tap(find.widgetWithText(TextButton, "STOP"));
+      await tester.pump(new Duration(seconds: 1)); // タップした後1秒待つ
+
+      expect(find.text('START'), findsOneWidget);
+
+      // 疑似タイマーだが止めておかないと動き続けてエラーがでるようだ？
+    });
+  });
+
+  testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(MyApp());
+
+      await tester.pumpAndSettle(); // prefsからの読み込みを待つ
+
+      // タイマー表示 分のところをチェック デフォルトが3分
+      expect(find.text('03:'), findsOneWidget);
+      expect(find.text('02:'), findsNothing);
+
+      // 秒
+      expect(find.text('00:'), findsOneWidget);
+
+      // ミリ秒以下2桁
+      expect(find.text('00'), findsOneWidget);
+
+      // Flutterのテストはタイマーが動かないのでタイマーによる変化はテストできない
     });
   });
 }
