@@ -26,7 +26,7 @@ void main() {
     });
   });
 
-  // 一晩おいたら動かなくなった！ アプリ側でこの部分変える可能性大なので深追いせずコメントアウトしておく
+  // なぜか突然動かなくなった！ アプリ側でこの部分変える可能性大なので深追いせずコメントアウトしておく
   // testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
   //   await tester.runAsync(() async {
   //     await tester.pumpWidget(MaterialApp(home: Clock(title: 'Flutter Clock')));
