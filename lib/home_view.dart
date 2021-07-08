@@ -11,6 +11,8 @@ class Clock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<TimerModel>(context, listen: false).restore();
+
     return Scaffold(
       appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
       body: Center(
@@ -59,6 +61,20 @@ class TimerModel extends ChangeNotifier {
 
     update();
 
+    print("restored");
+
+    notifyListeners();
+  }
+
+  void changeMin(newMin) {
+    _min = newMin;
+
+    notifyListeners();
+  }
+
+  void changeSec(newSec) {
+    _sec = newSec;
+
     notifyListeners();
   }
 
@@ -91,6 +107,8 @@ class TimerModel extends ChangeNotifier {
       // すべての桁が0になったらタイマー終了
       finish();
     }
+
+    notifyListeners();
   }
 
   void startOrStop() {
@@ -146,7 +164,11 @@ class TimerModel extends ChangeNotifier {
 
   void startEdit() {
     _inEdit = true;
-    reset();
+    if (_timer != null) {
+      reset();
+    }
+
+    notifyListeners();
   }
 
   void update() async {
@@ -154,13 +176,13 @@ class TimerModel extends ChangeNotifier {
     prefs.setString(_timerId, "$_min:$_sec:00");
   }
 
-  finishEdit() {
+  void finishEdit() {
     update();
     _inEdit = false;
     reset();
   }
 
-  cancelEdit() {
+  void cancelEdit() {
     _inEdit = false;
     reset();
   }
@@ -171,7 +193,6 @@ class ClockTip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TimerModel>(builder: (context, timer, child) {
-      timer.restore();
       return Column(children: [
         timer._inEdit ? DisplayEdit() : Display(),
         timer._inEdit ? InEditButtons() : StartStopButton(),
@@ -286,18 +307,19 @@ class DisplayEdit extends StatelessWidget {
           ),
           onPressed: () {
             if (minOrSec == "min") {
-              timer._min = ClockEditor.changeMin(timer._min, upOrDown);
+              timer.changeMin(ClockEditor.changeMin(timer._min, upOrDown));
+              print(timer._min);
             } else {
-              timer._sec = ClockEditor.changeSec(timer._sec, upOrDown);
+              timer.changeSec(ClockEditor.changeSec(timer._sec, upOrDown));
             }
           },
           // TODO: 長押し 以下のコードでなぜか動かない
           onLongPress: () {
             print("longpress");
             if (minOrSec == "min") {
-              timer._min = ClockEditor.changeMin(timer._min, upOrDown);
+              timer.changeMin(ClockEditor.changeMin(timer._min, upOrDown));
             } else {
-              timer._sec = ClockEditor.changeSec(timer._sec, upOrDown);
+              timer.changeSec(ClockEditor.changeSec(timer._sec, upOrDown));
             }
           });
     });
