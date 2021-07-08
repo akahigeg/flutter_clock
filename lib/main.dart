@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import './home_view.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(create: (context) => TimerModel(), child: MyApp()));
+  // runApp(ChangeNotifierProvider(create: (context) => TimerModel(), child: MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Clock(title: 'Flutter Clock'),
+      home: ChangeNotifierProvider(create: (context) => TimerModel(), child: Clock()),
     );
   }
 }

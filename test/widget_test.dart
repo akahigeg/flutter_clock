@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter_clock/home_view.dart';
 
@@ -7,7 +8,9 @@ void main() {
   testWidgets('toggle START and STOP button', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.runAsync(() async {
-      await tester.pumpWidget(MaterialApp(home: Clock(title: 'Flutter Clock')));
+      await tester.pumpWidget(MaterialApp(
+        home: ChangeNotifierProvider(create: (context) => TimerModel(), child: Clock()),
+      ));
       expect(find.text('START'), findsOneWidget);
 
       // STARTボタンをタップ
