@@ -118,6 +118,8 @@ class TimerModel extends ChangeNotifier {
     } else {
       stop();
     }
+
+    notifyListeners();
   }
 
   void start() {
@@ -141,7 +143,6 @@ class TimerModel extends ChangeNotifier {
   void stop() {
     // 中断したタイマーの再開ができるように停めた時間を記録
     _lastStopTime = DateTime.now();
-    print(_lastStopTime);
     _timer.cancel(); // _switchTimer以外から_stopTimerを呼び出すとなぜかバグる
   }
 
@@ -149,7 +150,10 @@ class TimerModel extends ChangeNotifier {
     _isStart = false;
     _lastStopTime = null;
     _stoppedMilliseconds = 0;
-    _timer.cancel();
+
+    if (_timer != null) {
+      _timer.cancel();
+    }
 
     // _stopTimer();
     restore();
