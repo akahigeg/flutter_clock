@@ -22,7 +22,12 @@ class Clock extends StatelessWidget {
             Text(
               'Remain time:',
             ),
-            ClockTip(),
+            Consumer<TimerModel>(builder: (context, timer, child) {
+              return Column(children: [
+                timer._inEdit ? DisplayEdit() : Display(),
+                timer._inEdit ? InEditButtons() : StartStopButton(),
+              ]);
+            })
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -164,6 +169,7 @@ class TimerModel extends ChangeNotifier {
     // _stopTimer();
     // _player.play('warn.mp3'); Androidでビルドできないのでk
     // TODO: 完了処理を入れる
+    // TODO: いったん完了してSTARTしたあとの表示がおかしい
   }
 
   void startEdit() {
@@ -189,19 +195,6 @@ class TimerModel extends ChangeNotifier {
   void cancelEdit() {
     _inEdit = false;
     reset();
-  }
-}
-
-// Stateを末端に追いやるテスト
-class ClockTip extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
-      return Column(children: [
-        timer._inEdit ? DisplayEdit() : Display(),
-        timer._inEdit ? InEditButtons() : StartStopButton(),
-      ]);
-    });
   }
 }
 
