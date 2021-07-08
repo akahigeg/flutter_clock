@@ -53,9 +53,88 @@ class TimerModel extends ChangeNotifier {
     // _updateTimer();
   }
 
-  String min() {
-    return _min;
+  void _countDown(Timer timer) {
+    // 開始時間と現在時間の差分から表示内容を求める
+    var currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+
+    // 経過した時間
+    var pastMsec = currentTimestamp - _startTime.millisecondsSinceEpoch - _stoppedMilliseconds;
+    int minusSec = (pastMsec / 1000).ceil();
+    // タイマーが1:03で1秒経過した時も0:02になってしまう。3秒経過で1:00 4秒経過で0:59になってほしい
+    // タイマーが1:13で1秒経過した時も0:12になってしまう。13秒経過で1:00 14秒経過で0:59になってほしい
+    int minusMin;
+    if (minusSec % 60 > _initialSec) {
+      minusMin = (minusSec / 60).ceil();
+    } else {
+      minusMin = (minusSec / 60).floor();
+    }
+
+    // 表示する時間
+    int newMsec = ((_initialMsec - pastMsec % 1000) ~/ 10).floor();
+    int newSec = ((_initialSec - minusSec) % 60).floor();
+    int newMin = (_initialMin - minusMin);
+
+    _msec = newMsec.toString().padLeft(2, '0');
+    _sec = newSec.toString().padLeft(2, '0');
+    _min = newMin.toString().padLeft(2, '0');
+
+    if (_min == '00' && _sec == '00' && _msec == '00') {
+      // すべての桁が0になったらタイマー終了
+      finish();
+    }
   }
+
+  void startOrStop() {
+    _isStart = !_isStart;
+    if (_isStart) {
+      start();
+    } else {
+      stop();
+    }
+  }
+
+  void start() {
+    if (_lastStopTime == null) {
+      // 新しいタイマーの開始
+      _startTime = DateTime.now();
+    } else {
+      // 中断したタイマーの再開
+      _stoppedMilliseconds = (DateTime.now().millisecondsSinceEpoch - _lastStopTime.millisecondsSinceEpoch).toInt() + _stoppedMilliseconds;
+      print(_lastStopTime.millisecondsSinceEpoch);
+      print(DateTime.now().millisecondsSinceEpoch);
+      print(_stoppedMilliseconds);
+    }
+
+    _timer = Timer.periodic(
+      Duration(milliseconds: 1),
+      _countDown,
+    );
+  }
+
+  void stop() {
+    // 中断したタイマーの再開ができるように停めた時間を記録
+    _lastStopTime = DateTime.now();
+    _timer.cancel(); // _switchTimer以外から_stopTimerを呼び出すとなぜかバグる
+  }
+
+  void reset() {
+    _isStart = false;
+    _lastStopTime = null;
+    _stoppedMilliseconds = 0;
+    _timer.cancel();
+
+    // _stopTimer();
+    restore();
+  }
+
+  void finish() {
+    _timer.cancel();
+    // _stopTimer();
+    // _player.play('warn.mp3'); Androidでビルドできないのでk
+    // TODO: 完了処理を入れる
+  }
+
+  void startEdit() {}
 }
 
 // Stateを末端に追いやるテスト
@@ -93,6 +172,43 @@ class Display extends StatelessWidget {
           // TODO: msecのサイズ小さく
         ],
       );
+    });
+  }
+}
+
+class StartStopButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Container(
+          margin: EdgeInsets.only(top: 50.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 100,
+                height: 50,
+                margin: EdgeInsets.only(right: 10.0),
+                color: timer._isStart ? Colors.redAccent : Colors.lightGreenAccent,
+                // TODO: 00:00:00の場合はSTARTを押せないように
+                child: TextButton(child: Text(timer._isStart ? 'STOP' : 'START'), onPressed: timer.startOrStop, key: Key("start_stop")),
+              ),
+              Container(
+                width: 100,
+                height: 50,
+                margin: EdgeInsets.only(left: 10.0),
+                color: Colors.greenAccent,
+                child: TextButton(child: Text('RESET'), onPressed: timer.reset),
+              ),
+              Container(
+                width: 100,
+                height: 50,
+                margin: EdgeInsets.only(left: 10.0),
+                color: Colors.greenAccent,
+                child: TextButton(child: Text('EDIT'), onPressed: timer.startEdit),
+              )
+            ],
+          ));
     });
   }
 }
@@ -249,6 +365,7 @@ class _ClockState extends State<Clock> {
             _inEdit ? displayEdit(context) : displayTimer(context),
             _inEdit ? inEditButtons(context) : buttons(context),
             ClockTip(),
+            StartStopButton(),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
