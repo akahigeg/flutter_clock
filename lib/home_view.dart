@@ -46,8 +46,9 @@ class TimerModel extends ChangeNotifier {
     _sec = numbers[1].toString().padLeft(2, '0');
     _msec = numbers[2].toString().padLeft(2, '0');
 
+    update();
+
     notifyListeners();
-    // _updateTimer();
   }
 
   void _countDown(Timer timer) {
@@ -241,27 +242,53 @@ class DisplayEdit extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            // upDownButton(context, "up", "min"),
+            upDownButton(context, "up", "min"),
             Text(
               '${timer._min}',
               style: Theme.of(context).textTheme.headline4,
             ),
-            // upDownButton(context, "down", "min"),
+            upDownButton(context, "down", "min"),
           ]),
           Text(
             ':',
             style: Theme.of(context).textTheme.headline4,
           ),
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            // upDownButton(context, "up", "sec"),
+            upDownButton(context, "up", "sec"),
             Text(
               '${timer._sec}',
               style: Theme.of(context).textTheme.headline4,
             ),
-            // upDownButton(context, "down", "sec"),
+            upDownButton(context, "down", "sec"),
           ]),
         ],
       );
+    });
+  }
+
+  Widget upDownButton(BuildContext context, String upOrDown, String minOrSec) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return ElevatedButton(
+          child: Icon(upOrDown == "up" ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+          style: ElevatedButton.styleFrom(
+            shape: CircleBorder(),
+          ),
+          onPressed: () {
+            if (minOrSec == "min") {
+              timer._min = ClockEditor.changeMin(timer._min, upOrDown);
+            } else {
+              timer._sec = ClockEditor.changeSec(timer._sec, upOrDown);
+            }
+          },
+          // TODO: 長押し 以下のコードでなぜか動かない
+          onLongPress: () {
+            print("longpress");
+            if (minOrSec == "min") {
+              timer._min = ClockEditor.changeMin(timer._min, upOrDown);
+            } else {
+              timer._sec = ClockEditor.changeSec(timer._sec, upOrDown);
+            }
+          });
     });
   }
 }
