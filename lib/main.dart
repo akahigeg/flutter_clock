@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import './home_view.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(create: (context) => TimerModel(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

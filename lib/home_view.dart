@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
 
 import './clock_editor.dart';
 
@@ -16,24 +17,83 @@ class Clock extends StatefulWidget {
   }
 }
 
-// Stateを末端に追いやるテスト
-class ClockTip extends StatelessWidget {
-  ClockTip();
+class TimerModel extends ChangeNotifier {
+  String _timerId = "timer1";
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'Tip Stateless',
-    );
+  int _initialMin = 0; // SharedPreferencesから読む
+  int _initialSec = 0; // SharedPreferencesから読む
+  int _initialMsec = 1000; // 設定できない値なので固定
+
+  String _min = '00';
+  String _sec = '00';
+  String _msec = '00';
+
+  var _timer;
+  var _startTime;
+  var _lastStopTime;
+  var _stoppedMilliseconds = 0; // 中断時間の合計
+  bool _isStart = false;
+  bool _inEdit = false;
+
+  void restore() async {
+    var prefs = await SharedPreferences.getInstance();
+    var timer = prefs.getString(_timerId) ?? "03:00:00";
+    var numbers = timer.toString().split(":");
+
+    _initialMin = int.parse(numbers[0]);
+    _initialSec = int.parse(numbers[1]);
+    _min = numbers[0].toString().padLeft(2, '0');
+    _sec = numbers[1].toString().padLeft(2, '0');
+    _msec = numbers[2].toString().padLeft(2, '0');
+
+    print(timer);
+    print(_min);
+
+    notifyListeners();
+    // _updateTimer();
+  }
+
+  String min() {
+    return _min;
   }
 }
 
-class OnOffSwitchButton extends StatelessWidget {
+// Stateを末端に追いやるテスト
+class ClockTip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Tip Stateless',
-    );
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      timer.restore();
+      return Display();
+    });
+  }
+}
+
+class Display extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      print(timer._min);
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Text(
+            '${timer._min}:',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Text(
+            '${timer._sec}:',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Text(
+            '${timer._msec}',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          // TODO: msecのサイズ小さく
+        ],
+      );
+    });
   }
 }
 
