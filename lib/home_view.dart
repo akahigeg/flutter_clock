@@ -46,9 +46,6 @@ class TimerModel extends ChangeNotifier {
     _sec = numbers[1].toString().padLeft(2, '0');
     _msec = numbers[2].toString().padLeft(2, '0');
 
-    print(timer);
-    print(_min);
-
     notifyListeners();
     // _updateTimer();
   }
@@ -114,6 +111,7 @@ class TimerModel extends ChangeNotifier {
   void stop() {
     // 中断したタイマーの再開ができるように停めた時間を記録
     _lastStopTime = DateTime.now();
+    print(_lastStopTime);
     _timer.cancel(); // _switchTimer以外から_stopTimerを呼び出すとなぜかバグる
   }
 
@@ -134,7 +132,26 @@ class TimerModel extends ChangeNotifier {
     // TODO: 完了処理を入れる
   }
 
-  void startEdit() {}
+  void startEdit() {
+    _inEdit = true;
+    reset();
+  }
+
+  void update() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString(_timerId, "$_min:$_sec:00");
+  }
+
+  finishEdit() {
+    update();
+    _inEdit = false;
+    reset();
+  }
+
+  cancelEdit() {
+    _inEdit = false;
+    reset();
+  }
 }
 
 // Stateを末端に追いやるテスト
@@ -143,7 +160,10 @@ class ClockTip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimerModel>(builder: (context, timer, child) {
       timer.restore();
-      return Display();
+      return Column(children: [
+        timer._inEdit ? DisplayEdit() : Display(),
+        timer._inEdit ? InEditButtons() : StartStopButton(),
+      ]);
     });
   }
 }
@@ -152,7 +172,6 @@ class Display extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TimerModel>(builder: (context, timer, child) {
-      print(timer._min);
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -176,6 +195,7 @@ class Display extends StatelessWidget {
   }
 }
 
+// TODO: ボタンごとに分割
 class StartStopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -206,6 +226,68 @@ class StartStopButton extends StatelessWidget {
                 margin: EdgeInsets.only(left: 10.0),
                 color: Colors.greenAccent,
                 child: TextButton(child: Text('EDIT'), onPressed: timer.startEdit),
+              )
+            ],
+          ));
+    });
+  }
+}
+
+class DisplayEdit extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            // upDownButton(context, "up", "min"),
+            Text(
+              '${timer._min}',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            // upDownButton(context, "down", "min"),
+          ]),
+          Text(
+            ':',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            // upDownButton(context, "up", "sec"),
+            Text(
+              '${timer._sec}',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            // upDownButton(context, "down", "sec"),
+          ]),
+        ],
+      );
+    });
+  }
+}
+
+class InEditButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Container(
+          margin: EdgeInsets.only(top: 50.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 100,
+                height: 50,
+                margin: EdgeInsets.only(left: 10.0),
+                color: Colors.greenAccent,
+                child: TextButton(child: Text('DONE'), onPressed: timer.finishEdit),
+              ),
+              Container(
+                width: 100,
+                height: 50,
+                margin: EdgeInsets.only(left: 10.0),
+                color: Colors.greenAccent,
+                child: TextButton(child: Text('CANCEL'), onPressed: timer.cancelEdit),
               )
             ],
           ));
@@ -244,8 +326,6 @@ class _ClockState extends State<Clock> {
     var prefs = await SharedPreferences.getInstance();
     var timer = prefs.getString(_timerId) ?? "03:00:00";
     var numbers = timer.toString().split(":");
-
-    print("call restoreTimer");
 
     setState(() {
       _initialMin = int.parse(numbers[0]);
@@ -365,7 +445,6 @@ class _ClockState extends State<Clock> {
             _inEdit ? displayEdit(context) : displayTimer(context),
             _inEdit ? inEditButtons(context) : buttons(context),
             ClockTip(),
-            StartStopButton(),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
