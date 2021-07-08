@@ -28,6 +28,15 @@ class ClockTip extends StatelessWidget {
   }
 }
 
+class OnOffSwitchButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Tip Stateless',
+    );
+  }
+}
+
 class _ClockState extends State<Clock> {
   String _timerId = "timer1";
 
