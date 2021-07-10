@@ -18,7 +18,12 @@ class FlutterTimer extends StatelessWidget {
     final List<Widget> _pages = <Widget>[
       new TimerWidget("timer1"),
       new TimerWidget("timer2"),
+      new TimerWidget("timer3"),
     ];
+
+    // TODO: ページ切り替えにインジケータをつける
+    // ref: https://gist.github.com/collinjackson/4fddbfa2830ea3ac033e34622f278824
+    // TODO: TimerModelで複数のタイマーを扱う
 
     return Scaffold(
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
@@ -37,9 +42,9 @@ class FlutterTimer extends StatelessWidget {
 }
 
 class TimerWidget extends StatelessWidget {
-  TimerWidget(String timerId) {
-    final _timerId = timerId;
-  }
+  TimerWidget(this.timerId);
+
+  final String timerId;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +56,7 @@ class TimerWidget extends StatelessWidget {
         children: <Widget>[
           Consumer<TimerModel>(builder: (context, timer, child) {
             return Column(children: [
+              Text(timerId),
               timer.inEdit ? DisplayEdit() : Display(),
               timer.inEdit ? InEditButtons() : ControlButtons(),
             ]);

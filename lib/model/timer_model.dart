@@ -27,6 +27,10 @@ class TimerModel extends ChangeNotifier {
   bool get isStart => _isStart;
   bool get inEdit => _inEdit;
 
+  set timerId(String timerId) {
+    _timerId = timerId;
+  }
+
   void restore() async {
     var prefs = await SharedPreferences.getInstance();
     var timer = prefs.getString(_timerId) ?? "03:00:00";
