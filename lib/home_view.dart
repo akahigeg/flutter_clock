@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 
-import './clock_editor.dart';
+import 'timer_setting.dart';
 
 class Clock extends StatelessWidget {
   Clock({Key? key}) : super(key: key);
@@ -304,19 +304,19 @@ class DisplayEdit extends StatelessWidget {
           ),
           onPressed: () {
             if (minOrSec == "min") {
-              timer.changeMin(ClockEditor.changeMin(timer._min, upOrDown));
+              timer.changeMin(TimerSetting.changeMin(timer._min, upOrDown));
               print(timer._min);
             } else {
-              timer.changeSec(ClockEditor.changeSec(timer._sec, upOrDown));
+              timer.changeSec(TimerSetting.changeSec(timer._sec, upOrDown));
             }
           },
           // TODO: 長押し 以下のコードでなぜか動かない
           onLongPress: () {
             print("longpress");
             if (minOrSec == "min") {
-              timer.changeMin(ClockEditor.changeMin(timer._min, upOrDown));
+              timer.changeMin(TimerSetting.changeMin(timer._min, upOrDown));
             } else {
-              timer.changeSec(ClockEditor.changeSec(timer._sec, upOrDown));
+              timer.changeSec(TimerSetting.changeSec(timer._sec, upOrDown));
             }
           });
     });
