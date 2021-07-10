@@ -116,15 +116,6 @@ class TimerModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void startOrStop() {
-    _isStart = !_isStart;
-    if (_isStart) {
-      start();
-    } else {
-      stop();
-    }
-  }
-
   void start() {
     _isStart = true;
 
