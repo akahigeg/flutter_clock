@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart'; // Androidでビルドできない
 import 'package:provider/provider.dart';
 
 import 'timer_setting.dart';
@@ -19,9 +19,6 @@ class Clock extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Remain time:',
-            ),
             Consumer<TimerModel>(builder: (context, timer, child) {
               return Column(children: [
                 timer._inEdit ? DisplayEdit() : Display(),
@@ -30,7 +27,7 @@ class Clock extends StatelessWidget {
             })
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
