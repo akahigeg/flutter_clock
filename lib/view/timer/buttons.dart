@@ -13,7 +13,6 @@ class ControlButtons extends StatelessWidget {
             children: <Widget>[
               timer.isStart ? StopButton() : StartButton(),
               ResetButton(),
-              EditButton(),
             ],
           ));
     });
@@ -60,21 +59,6 @@ class ResetButton extends StatelessWidget {
         margin: EdgeInsets.only(left: 10.0),
         color: Colors.greenAccent,
         child: TextButton(child: Text('RESET'), onPressed: timer.reset, key: Key("reset_button")),
-      );
-    });
-  }
-}
-
-class EditButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
-      return Container(
-        width: 100,
-        height: 50,
-        margin: EdgeInsets.only(left: 10.0),
-        color: Colors.greenAccent,
-        child: TextButton(child: Text('EDIT'), onPressed: timer.startEdit, key: Key("edit_button")),
       );
     });
   }

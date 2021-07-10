@@ -4,6 +4,17 @@ import 'package:flutter_clock/model/timer_model.dart';
 
 import 'package:flutter_clock/timer_setting.dart';
 
+class EditButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Container(
+        child: FloatingActionButton(child: Icon(Icons.edit), onPressed: timer.startEdit, key: Key("edit_button")),
+      );
+    });
+  }
+}
+
 class DisplayEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

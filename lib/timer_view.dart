@@ -17,6 +17,7 @@ class FlutterTimer extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
+      floatingActionButton: EditButton(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
