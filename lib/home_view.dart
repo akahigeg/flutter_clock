@@ -25,7 +25,7 @@ class Clock extends StatelessWidget {
             Consumer<TimerModel>(builder: (context, timer, child) {
               return Column(children: [
                 timer._inEdit ? DisplayEdit() : Display(),
-                timer._inEdit ? InEditButtons() : StartStopButton(),
+                timer._inEdit ? InEditButtons() : ControlButtons(),
               ]);
             })
           ],
@@ -222,8 +222,7 @@ class Display extends StatelessWidget {
   }
 }
 
-// TODO: ボタンごとに分割
-class StartStopButton extends StatelessWidget {
+class ControlButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TimerModel>(builder: (context, timer, child) {
