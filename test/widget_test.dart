@@ -10,7 +10,7 @@ void main() {
     // Build our app and trigger a frame.
     await tester.runAsync(() async {
       await tester.pumpWidget(MaterialApp(
-        home: ChangeNotifierProvider(create: (context) => TimerModel(), child: Clock()),
+        home: ChangeNotifierProvider(create: (context) => TimerModel(), child: FlutterTimer()),
       ));
       expect(find.text('START'), findsOneWidget);
 

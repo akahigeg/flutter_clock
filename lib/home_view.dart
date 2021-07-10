@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'model/timer_model.dart';
 import 'timer_setting.dart';
 
-class Clock extends StatelessWidget {
-  Clock({Key? key}) : super(key: key);
+class FlutterTimer extends StatelessWidget {
+  FlutterTimer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
