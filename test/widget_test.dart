@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_clock/home_view.dart';
+import 'package:flutter_clock/timer_view.dart';
 import 'package:flutter_clock/model/timer_model.dart';
 
 void main() {

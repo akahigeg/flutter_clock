@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import './home_view.dart';
+import 'timer_view.dart';
 import './model/timer_model.dart';
 
 void main() {
