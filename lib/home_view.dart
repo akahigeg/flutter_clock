@@ -281,7 +281,7 @@ class ResetButton extends StatelessWidget {
         height: 50,
         margin: EdgeInsets.only(left: 10.0),
         color: Colors.greenAccent,
-        child: TextButton(child: Text('RESET'), onPressed: timer.reset),
+        child: TextButton(child: Text('RESET'), onPressed: timer.reset, key: Key("reset_button")),
       );
     });
   }
@@ -296,7 +296,7 @@ class EditButton extends StatelessWidget {
         height: 50,
         margin: EdgeInsets.only(left: 10.0),
         color: Colors.greenAccent,
-        child: TextButton(child: Text('EDIT'), onPressed: timer.startEdit),
+        child: TextButton(child: Text('EDIT'), onPressed: timer.startEdit, key: Key("edit_button")),
       );
     });
   }
