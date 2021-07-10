@@ -23,7 +23,6 @@ class FlutterTimer extends StatelessWidget {
 
     // TODO: ページ切り替えにインジケータをつける
     // ref: https://gist.github.com/collinjackson/4fddbfa2830ea3ac033e34622f278824
-    // TODO: TimerModelで複数のタイマーを扱う
 
     return Scaffold(
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
@@ -36,6 +35,10 @@ class FlutterTimer extends StatelessWidget {
                   controller: _pageController,
                   itemBuilder: (BuildContext context, int index) {
                     return _pages[index % _pages.length];
+                  },
+                  onPageChanged: (int page) {
+                    Provider.of<TimerModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
+                    Provider.of<TimerModel>(context, listen: false).reset();
                   })
             ])));
   }
