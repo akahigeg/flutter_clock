@@ -85,7 +85,6 @@ class StartButton extends StatelessWidget {
         height: 50,
         margin: EdgeInsets.only(right: 10.0),
         color: Colors.lightGreenAccent,
-        // TODO: 00:00:00の場合はSTARTを押せないように
         child: TextButton(child: Text('START'), onPressed: timer.start, key: Key("start_button")),
       );
     });
