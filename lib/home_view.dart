@@ -123,11 +123,11 @@ class TimerModel extends ChangeNotifier {
     } else {
       stop();
     }
-
-    notifyListeners();
   }
 
   void start() {
+    _isStart = true;
+
     if (_lastStopTime == null) {
       // 新しいタイマーの開始
       _startTime = DateTime.now();
@@ -143,12 +143,18 @@ class TimerModel extends ChangeNotifier {
       Duration(milliseconds: 1),
       _countDown,
     );
+
+    notifyListeners();
   }
 
   void stop() {
+    _isStart = false;
+
     // 中断したタイマーの再開ができるように停めた時間を記録
     _lastStopTime = DateTime.now();
     _timer.cancel(); // _switchTimer以外から_stopTimerを呼び出すとなぜかバグる
+
+    notifyListeners();
   }
 
   void reset() {
@@ -235,14 +241,7 @@ class StartStopButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
-                width: 100,
-                height: 50,
-                margin: EdgeInsets.only(right: 10.0),
-                color: timer._isStart ? Colors.redAccent : Colors.lightGreenAccent,
-                // TODO: 00:00:00の場合はSTARTを押せないように
-                child: TextButton(child: Text(timer._isStart ? 'STOP' : 'START'), onPressed: timer.startOrStop, key: Key("start_stop")),
-              ),
+              timer._isStart ? StopButton() : StartButton(),
               Container(
                 width: 100,
                 height: 50,
@@ -259,6 +258,37 @@ class StartStopButton extends StatelessWidget {
               )
             ],
           ));
+    });
+  }
+}
+
+class StartButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Container(
+        width: 100,
+        height: 50,
+        margin: EdgeInsets.only(right: 10.0),
+        color: Colors.lightGreenAccent,
+        // TODO: 00:00:00の場合はSTARTを押せないように
+        child: TextButton(child: Text('START'), onPressed: timer.start, key: Key("start_button")),
+      );
+    });
+  }
+}
+
+class StopButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Container(
+        width: 100,
+        height: 50,
+        margin: EdgeInsets.only(right: 10.0),
+        color: Colors.redAccent,
+        child: TextButton(child: Text('STOP'), onPressed: timer.stop, key: Key("stop_button")),
+      );
     });
   }
 }
