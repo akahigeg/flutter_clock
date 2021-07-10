@@ -233,13 +233,7 @@ class StartStopButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               timer._isStart ? StopButton() : StartButton(),
-              Container(
-                width: 100,
-                height: 50,
-                margin: EdgeInsets.only(left: 10.0),
-                color: Colors.greenAccent,
-                child: TextButton(child: Text('RESET'), onPressed: timer.reset),
-              ),
+              ResetButton(),
               Container(
                 width: 100,
                 height: 50,
@@ -279,6 +273,21 @@ class StopButton extends StatelessWidget {
         margin: EdgeInsets.only(right: 10.0),
         color: Colors.redAccent,
         child: TextButton(child: Text('STOP'), onPressed: timer.stop, key: Key("stop_button")),
+      );
+    });
+  }
+}
+
+class ResetButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Container(
+        width: 100,
+        height: 50,
+        margin: EdgeInsets.only(left: 10.0),
+        color: Colors.greenAccent,
+        child: TextButton(child: Text('RESET'), onPressed: timer.reset),
       );
     });
   }
