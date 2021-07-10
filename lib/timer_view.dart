@@ -27,6 +27,7 @@ class FlutterTimer extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
         floatingActionButton: EditButton(),
+        // TODO: ダークモード？
         body: new IconTheme(
             data: new IconThemeData(color: Colors.black.withOpacity(0.8)),
             child: new Stack(children: <Widget>[
