@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:audioplayers/audioplayers.dart'; // Androidでビルドできない
 import 'package:provider/provider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 
 import 'model/timer_model.dart';
 
@@ -21,6 +22,8 @@ class FlutterTimer extends StatelessWidget {
       new TimerWidget(),
     ];
 
+    double _position = 0;
+
     // TODO: ページ切り替えにインジケータをつける
     // ref: https://gist.github.com/collinjackson/4fddbfa2830ea3ac033e34622f278824
 
@@ -38,9 +41,12 @@ class FlutterTimer extends StatelessWidget {
                     return _pages[index % _pages.length];
                   },
                   onPageChanged: (int page) {
+                    _position = (page % _pages.length).toDouble();
+
                     Provider.of<TimerModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
                     Provider.of<TimerModel>(context, listen: false).reset();
-                  })
+                  }),
+              Positioned(child: DotsIndicator(dotsCount: _pages.length, position: _position), bottom: 180, left: 0, right: 0)
             ])));
   }
 }
