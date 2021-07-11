@@ -38,15 +38,20 @@ class FlutterTimer extends StatelessWidget {
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
                   itemBuilder: (BuildContext context, int index) {
+                    _position = (index % _pages.length).toDouble();
+
                     return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [_pages[index % _pages.length], Container(child: DotsIndicator(dotsCount: _pages.length, position: _position), margin: EdgeInsets.fromLTRB(0, 50, 0, 0))]);
                   },
                   onPageChanged: (int page) {
+                    // _position = (page % _pages.length).toDouble();
+                    // onPageChangedが発生したタイミングで書き換えが起こるので、_positionをここで書き換えてもDotsIndicatorのポジションは更新されない
+
                     Provider.of<TimerModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
                     Provider.of<TimerModel>(context, listen: false).reset();
 
-                    _position = (page % _pages.length).toDouble();
+                    print(_position);
                   }),
             ])));
   }
