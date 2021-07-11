@@ -33,20 +33,21 @@ class FlutterTimer extends StatelessWidget {
         // TODO: ダークモード？
         body: IconTheme(
             data: IconThemeData(color: Colors.black.withOpacity(0.8)),
-            child: Stack(children: <Widget>[
+            child: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
               PageView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
                   itemBuilder: (BuildContext context, int index) {
-                    return _pages[index % _pages.length];
+                    return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [_pages[index % _pages.length], Container(child: DotsIndicator(dotsCount: _pages.length, position: _position), margin: EdgeInsets.fromLTRB(0, 50, 0, 0))]);
                   },
                   onPageChanged: (int page) {
-                    _position = (page % _pages.length).toDouble();
-
                     Provider.of<TimerModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
                     Provider.of<TimerModel>(context, listen: false).reset();
+
+                    _position = (page % _pages.length).toDouble();
                   }),
-              Positioned(child: DotsIndicator(dotsCount: _pages.length, position: _position), bottom: 180, left: 0, right: 0)
             ])));
   }
 }
@@ -56,19 +57,17 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<TimerModel>(context, listen: false).restore();
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Consumer<TimerModel>(builder: (context, timer, child) {
-            return Column(children: [
-              Text(Provider.of<TimerModel>(context, listen: false).timerId),
-              timer.inEdit ? DisplayEdit() : Display(),
-              timer.inEdit ? InEditButtons() : ControlButtons(),
-            ]);
-          })
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Consumer<TimerModel>(builder: (context, timer, child) {
+          return Column(children: [
+            Text(Provider.of<TimerModel>(context, listen: false).timerId),
+            timer.inEdit ? DisplayEdit() : Display(),
+            timer.inEdit ? InEditButtons() : ControlButtons(),
+          ]);
+        })
+      ],
     );
   }
 }
