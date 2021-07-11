@@ -24,9 +24,6 @@ class FlutterTimer extends StatelessWidget {
 
     double _position = 0;
 
-    // TODO: ページ切り替えにインジケータをつける
-    // ref: https://gist.github.com/collinjackson/4fddbfa2830ea3ac033e34622f278824
-
     return Scaffold(
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
         floatingActionButton: EditButton(),
