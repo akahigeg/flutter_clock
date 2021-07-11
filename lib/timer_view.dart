@@ -23,8 +23,6 @@ class FlutterTimer extends StatelessWidget {
       new TimerWidget(),
     ];
 
-    double _position = 0;
-
     return Scaffold(
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
         floatingActionButton: EditButton(),
