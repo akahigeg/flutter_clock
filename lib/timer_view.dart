@@ -28,11 +28,11 @@ class FlutterTimer extends StatelessWidget {
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
         floatingActionButton: EditButton(),
         // TODO: ダークモード？
-        body: new IconTheme(
-            data: new IconThemeData(color: Colors.black.withOpacity(0.8)),
-            child: new Stack(children: <Widget>[
-              new PageView.builder(
-                  physics: new AlwaysScrollableScrollPhysics(),
+        body: IconTheme(
+            data: IconThemeData(color: Colors.black.withOpacity(0.8)),
+            child: Stack(children: <Widget>[
+              PageView.builder(
+                  physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
                   itemBuilder: (BuildContext context, int index) {
                     return _pages[index % _pages.length];
