@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
 import 'model/timer_model.dart';
+import 'model/dot_indicator_model.dart';
 
 import 'view/timer/display.dart';
 import 'view/timer/buttons.dart';
@@ -35,20 +36,21 @@ class FlutterTimer extends StatelessWidget {
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
                   itemBuilder: (BuildContext context, int index) {
-                    _position = (index % _pages.length).toDouble();
-
-                    return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [_pages[index % _pages.length], Container(child: DotsIndicator(dotsCount: _pages.length, position: _position), margin: EdgeInsets.fromLTRB(0, 50, 0, 0))]);
+                    return _pages[index % _pages.length];
                   },
                   onPageChanged: (int page) {
-                    // NOTE:
-                    // _position = (page % _pages.length).toDouble();
-                    // onPageChangedが発生したタイミングでitemBuilder部分の書き換えが起こるので、_positionをここで書き換えてもDotsIndicatorのポジションは正しく更新されない
-
+                    // アクティブなタイマーの切り替え
                     Provider.of<TimerModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
                     Provider.of<TimerModel>(context, listen: false).reset();
+
+                    // ドットインジケーターのポジションの更新
+                    Provider.of<DotIndicatorModel>(context, listen: false).position = (page % _pages.length).toDouble();
                   }),
+              Positioned(
+                  child: Consumer<DotIndicatorModel>(builder: (context, di, child) {
+                    return Container(child: DotsIndicator(dotsCount: _pages.length, position: di.position), margin: EdgeInsets.fromLTRB(0, 50, 0, 0));
+                  }),
+                  bottom: 180)
             ])));
   }
 }
