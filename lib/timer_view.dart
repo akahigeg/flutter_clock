@@ -37,7 +37,7 @@ class FlutterTimer extends StatelessWidget {
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
                   itemBuilder: (BuildContext context, int index) {
-                    return _pages[index % _pages.length];
+                    return Column(children: [_pages[index % _pages.length]]);
                   },
                   onPageChanged: (int page) {
                     // アクティブなタイマーの切り替え
@@ -51,7 +51,7 @@ class FlutterTimer extends StatelessWidget {
                   child: Consumer<DotIndicatorModel>(builder: (context, di, child) {
                     return Container(child: DotsIndicator(dotsCount: _pages.length, position: di.position), margin: EdgeInsets.fromLTRB(0, 50, 0, 0));
                   }),
-                  bottom: 180)
+                  bottom: 180),
             ])));
   }
 }
@@ -116,7 +116,8 @@ class TimerWidget extends StatelessWidget {
     Provider.of<TimerModel>(context, listen: false).restore();
 
     return Consumer<TimerModel>(builder: (context, timer, child) {
-      return Stack(
+      return Container(
+          child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
           // サークルインジケーター
@@ -129,7 +130,7 @@ class TimerWidget extends StatelessWidget {
           // ボタン
           Container(child: timer.inEdit ? InEditButtons() : ControlButtons(), margin: EdgeInsets.fromLTRB(0, 400, 0, 0))
         ],
-      );
+      ));
     });
   }
 }
