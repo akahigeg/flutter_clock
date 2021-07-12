@@ -86,7 +86,7 @@ class InEditButtons extends StatelessWidget {
               Container(
                 width: 100,
                 height: 50,
-                margin: EdgeInsets.only(left: 10.0),
+                margin: EdgeInsets.only(right: 10.0),
                 color: Colors.greenAccent,
                 child: TextButton(child: Text('DONE'), onPressed: timer.finishEdit),
               ),

@@ -119,14 +119,15 @@ class TimerWidget extends StatelessWidget {
       return Stack(
         alignment: AlignmentDirectional.center,
         children: [
+          // サークルインジケーター
           Container(child: timer.inEdit ? CircleIndicatorForEdit() : CircleIndicator(), margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
+          // タイマー表示
           Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Column(children: [
-              Text(Provider.of<TimerModel>(context, listen: false).timerId),
-              timer.inEdit ? DisplayEdit() : Display(),
-              timer.inEdit ? InEditButtons() : ControlButtons(),
-            ])
-          ])
+            Text(Provider.of<TimerModel>(context, listen: false).timerId),
+            timer.inEdit ? DisplayEdit() : Display(),
+          ]),
+          // ボタン
+          Container(child: timer.inEdit ? InEditButtons() : ControlButtons(), margin: EdgeInsets.fromLTRB(0, 400, 0, 0))
         ],
       );
     });
