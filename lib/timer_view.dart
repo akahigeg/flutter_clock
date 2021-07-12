@@ -10,7 +10,8 @@ import 'view/timer/display.dart';
 import 'view/timer/buttons.dart';
 import 'view/timer/edit.dart';
 
-import 'dart:math';
+import 'dart:math' as math;
+import 'package:vector_math/vector_math.dart' as vector_math;
 
 class FlutterTimer extends StatelessWidget {
   FlutterTimer({Key? key}) : super(key: key);
@@ -33,10 +34,12 @@ class FlutterTimer extends StatelessWidget {
             data: IconThemeData(color: Colors.black.withOpacity(0.8)),
             child: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
               Container(
-                  child: CustomPaint(
-                    size: const Size(200, 200),
-                    painter: CirclePaint(),
-                  ),
+                  child: Consumer<TimerModel>(builder: (context, timer, child) {
+                    return CustomPaint(
+                      size: const Size(300, 300),
+                      painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec)),
+                    );
+                  }),
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
               PageView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
@@ -61,23 +64,38 @@ class FlutterTimer extends StatelessWidget {
   }
 }
 
-class CirclePaint extends CustomPainter {
+class ArcPaint extends CustomPainter {
+  int _initialSec = 0;
+  int _remainMsec = 0;
+
+  ArcPaint(int initialMsec, int remainMsec) {
+    _initialSec = initialMsec;
+    _remainMsec = remainMsec;
+  }
   @override
   void paint(Canvas canvas, Size size) {
+    print(_remainMsec);
     final paint = Paint()
       ..color = Colors.red
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 12;
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = min(size.width, size.height);
-    canvas.drawCircle(center, radius, paint);
+    final rect = Rect.fromLTRB(0, 0, size.width, size.height);
+    final startAngle = -vector_math.radians(90.0); // 0時の位置から
+    double degree = _remainMsec / _initialSec * 360;
+    if (degree == 0.0) {
+      degree = 360;
+    }
+    print(degree);
+    final sweepAngle = -vector_math.radians(degree);
+    final useCenter = false;
+
+    canvas.drawArc(rect, startAngle, sweepAngle, useCenter, paint);
   }
 
-  // 再描画する必要なし
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }
 

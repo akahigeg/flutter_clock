@@ -20,6 +20,9 @@ class TimerModel extends ChangeNotifier {
   bool _isStart = false;
   bool _inEdit = false;
 
+  int get initialMin => _initialMin;
+  int get initialSec => _initialSec;
+
   String get min => _min;
   String get sec => _sec;
   String get msec => _msec;

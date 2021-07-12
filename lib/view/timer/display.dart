@@ -22,7 +22,6 @@ class Display extends StatelessWidget {
             '${timer.msec}',
             style: Theme.of(context).textTheme.headline3,
           ),
-          // TODO: msecのサイズ小さく
         ],
       );
     });
