@@ -12,15 +12,15 @@ class Display extends StatelessWidget {
         children: <Widget>[
           Text(
             '${timer.min}:',
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headline2,
           ),
           Text(
             '${timer.sec}:',
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headline2,
           ),
           Text(
             '${timer.msec}',
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline3,
           ),
           // TODO: msecのサイズ小さく
         ],

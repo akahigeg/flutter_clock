@@ -10,6 +10,8 @@ import 'view/timer/display.dart';
 import 'view/timer/buttons.dart';
 import 'view/timer/edit.dart';
 
+import 'dart:math';
+
 class FlutterTimer extends StatelessWidget {
   FlutterTimer({Key? key}) : super(key: key);
 
@@ -30,6 +32,12 @@ class FlutterTimer extends StatelessWidget {
         body: IconTheme(
             data: IconThemeData(color: Colors.black.withOpacity(0.8)),
             child: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
+              Container(
+                  child: CustomPaint(
+                    size: const Size(200, 200),
+                    painter: CirclePaint(),
+                  ),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
               PageView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
@@ -50,6 +58,26 @@ class FlutterTimer extends StatelessWidget {
                   }),
                   bottom: 180)
             ])));
+  }
+}
+
+class CirclePaint extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 12;
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = min(size.width, size.height);
+    canvas.drawCircle(center, radius, paint);
+  }
+
+  // 再描画する必要なし
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
 
