@@ -89,6 +89,27 @@ class ArcPaint extends CustomPainter {
   }
 }
 
+class CircleIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return CustomPaint(
+        size: const Size(300, 300),
+        painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec) * 10),
+      );
+    });
+  }
+}
+
+class CircleIndicatorForEdit extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return CustomPaint(size: const Size(300, 300), painter: ArcPaint(1, 1));
+    });
+  }
+}
+
 class TimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -97,10 +118,7 @@ class TimerWidget extends StatelessWidget {
     return Stack(alignment: AlignmentDirectional.center, children: [
       Container(
           child: Consumer<TimerModel>(builder: (context, timer, child) {
-            return CustomPaint(
-              size: const Size(300, 300),
-              painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec) * 10),
-            );
+            return timer.inEdit ? CircleIndicatorForEdit() : CircleIndicator();
           }),
           margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
       Column(
