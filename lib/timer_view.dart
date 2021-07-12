@@ -115,24 +115,20 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<TimerModel>(context, listen: false).restore();
 
-    return Stack(alignment: AlignmentDirectional.center, children: [
-      Container(
-          child: Consumer<TimerModel>(builder: (context, timer, child) {
-            return timer.inEdit ? CircleIndicatorForEdit() : CircleIndicator();
-          }),
-          margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Consumer<TimerModel>(builder: (context, timer, child) {
-            return Column(children: [
+    return Consumer<TimerModel>(builder: (context, timer, child) {
+      return Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Container(child: timer.inEdit ? CircleIndicatorForEdit() : CircleIndicator(), margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            Column(children: [
               Text(Provider.of<TimerModel>(context, listen: false).timerId),
               timer.inEdit ? DisplayEdit() : Display(),
               timer.inEdit ? InEditButtons() : ControlButtons(),
-            ]);
-          })
+            ])
+          ])
         ],
-      )
-    ]);
+      );
+    });
   }
 }
