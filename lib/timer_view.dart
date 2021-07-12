@@ -37,7 +37,7 @@ class FlutterTimer extends StatelessWidget {
                   child: Consumer<TimerModel>(builder: (context, timer, child) {
                     return CustomPaint(
                       size: const Size(300, 300),
-                      painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec)),
+                      painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec) * 10),
                     );
                   }),
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
@@ -65,16 +65,15 @@ class FlutterTimer extends StatelessWidget {
 }
 
 class ArcPaint extends CustomPainter {
-  int _initialSec = 0;
+  int _initialMSec = 0;
   int _remainMsec = 0;
 
   ArcPaint(int initialMsec, int remainMsec) {
-    _initialSec = initialMsec;
+    _initialMSec = initialMsec;
     _remainMsec = remainMsec;
   }
   @override
   void paint(Canvas canvas, Size size) {
-    print(_remainMsec);
     final paint = Paint()
       ..color = Colors.red
       ..style = PaintingStyle.stroke
@@ -82,11 +81,10 @@ class ArcPaint extends CustomPainter {
       ..strokeWidth = 12;
     final rect = Rect.fromLTRB(0, 0, size.width, size.height);
     final startAngle = -vector_math.radians(90.0); // 0時の位置から
-    double degree = _remainMsec / _initialSec * 360;
+    double degree = _remainMsec / _initialMSec * 360;
     if (degree == 0.0) {
       degree = 360;
     }
-    print(degree);
     final sweepAngle = -vector_math.radians(degree);
     final useCenter = false;
 
