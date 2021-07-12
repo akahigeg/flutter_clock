@@ -33,14 +33,6 @@ class FlutterTimer extends StatelessWidget {
         body: IconTheme(
             data: IconThemeData(color: Colors.black.withOpacity(0.8)),
             child: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
-              Container(
-                  child: Consumer<TimerModel>(builder: (context, timer, child) {
-                    return CustomPaint(
-                      size: const Size(300, 300),
-                      painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec) * 10),
-                    );
-                  }),
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
               PageView.builder(
                   physics: AlwaysScrollableScrollPhysics(),
                   controller: _pageController,
@@ -102,17 +94,27 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<TimerModel>(context, listen: false).restore();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Consumer<TimerModel>(builder: (context, timer, child) {
-          return Column(children: [
-            Text(Provider.of<TimerModel>(context, listen: false).timerId),
-            timer.inEdit ? DisplayEdit() : Display(),
-            timer.inEdit ? InEditButtons() : ControlButtons(),
-          ]);
-        })
-      ],
-    );
+    return Stack(alignment: AlignmentDirectional.center, children: [
+      Container(
+          child: Consumer<TimerModel>(builder: (context, timer, child) {
+            return CustomPaint(
+              size: const Size(300, 300),
+              painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec) * 10),
+            );
+          }),
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Consumer<TimerModel>(builder: (context, timer, child) {
+            return Column(children: [
+              Text(Provider.of<TimerModel>(context, listen: false).timerId),
+              timer.inEdit ? DisplayEdit() : Display(),
+              timer.inEdit ? InEditButtons() : ControlButtons(),
+            ]);
+          })
+        ],
+      )
+    ]);
   }
 }
