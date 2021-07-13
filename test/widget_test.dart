@@ -69,23 +69,24 @@ void main() {
   });
 
   // なぜか突然動かなくなった！ アプリ側でこの部分変える可能性大なので深追いせずコメントアウトしておく
-  // testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
-  //   await tester.runAsync(() async {
-  //     await tester.pumpWidget(MaterialApp(home: Clock(title: 'Flutter Clock')));
+  testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      await tester.pumpWidget(MaterialApp(
+          home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
 
-  //     await tester.pumpAndSettle(); // prefsからの読み込みを待つ
+      await tester.pumpAndSettle(); // prefsからの読み込みを待つ
 
-  //     // タイマー表示 分のところをチェック デフォルトが3分
-  //     expect(find.text('03:'), findsOneWidget);
-  //     expect(find.text('02:'), findsNothing);
+      // タイマー表示 分のところをチェック デフォルトが3分
+      expect(find.text('03:'), findsOneWidget);
+      expect(find.text('02:'), findsNothing);
 
-  //     // 秒
-  //     expect(find.text('00:'), findsOneWidget);
+      // 秒
+      expect(find.text('00:'), findsOneWidget);
 
-  //     // ミリ秒以下2桁
-  //     expect(find.text('00'), findsOneWidget);
+      // ミリ秒以下2桁
+      expect(find.text('00'), findsOneWidget);
 
-  //     // Flutterのテストはタイマーが動かないのでタイマーによる変化はテストできない
-  //   });
-  // });
+      // Flutterのテストはタイマーが動かないのでタイマーによる変化はテストできない
+    });
+  });
 }
