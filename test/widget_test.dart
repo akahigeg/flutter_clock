@@ -17,12 +17,12 @@ void main() {
       // STARTボタンをタップ
       // await tester.tap(find.widgetWithText(TextButton, "START"));
       await tester.tap(find.byKey(Key("start_button")));
-      await tester.pump(new Duration(seconds: 1)); // タップした後1秒待つ
+      await tester.pumpAndSettle();
 
       expect(find.text('STOP'), findsOneWidget);
 
       await tester.tap(find.widgetWithText(TextButton, "STOP"));
-      await tester.pump(new Duration(seconds: 1)); // タップした後1秒待つ
+      await tester.pumpAndSettle();
 
       expect(find.text('START'), findsOneWidget);
 
