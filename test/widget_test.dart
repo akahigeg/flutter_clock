@@ -12,19 +12,23 @@ void main() {
     await tester.runAsync(() async {
       await tester.pumpWidget(MaterialApp(
           home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
+
       expect(find.text('START'), findsOneWidget);
+      expect(find.text('STOP'), findsNothing);
 
       // STARTボタンをタップ
       // await tester.tap(find.widgetWithText(TextButton, "START"));
       await tester.tap(find.byKey(Key("start_button")));
       await tester.pumpAndSettle();
 
+      expect(find.text('START'), findsNothing);
       expect(find.text('STOP'), findsOneWidget);
 
       await tester.tap(find.widgetWithText(TextButton, "STOP"));
       await tester.pumpAndSettle();
 
       expect(find.text('START'), findsOneWidget);
+      expect(find.text('STOP'), findsNothing);
 
       // 疑似タイマーだが止めておかないと動き続けてエラーがでるようだ？
     });
