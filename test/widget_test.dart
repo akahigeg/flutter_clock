@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_clock/timer_view.dart';
 import 'package:flutter_clock/model/timer_model.dart';
@@ -68,6 +70,12 @@ void main() {
     });
   });
 
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("timer1", "04:00:00");
+  });
+
   // なぜか突然動かなくなった！ アプリ側でこの部分変える可能性大なので深追いせずコメントアウトしておく
   testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
     await tester.runAsync(() async {
@@ -76,9 +84,9 @@ void main() {
 
       await tester.pumpAndSettle(); // prefsからの読み込みを待つ
 
-      // タイマー表示 分のところをチェック デフォルトが3分
-      expect(find.text('03:'), findsOneWidget);
-      expect(find.text('02:'), findsNothing);
+      // タイマー表示 分のところをチェック
+      expect(find.text('04:'), findsOneWidget);
+      expect(find.text('03:'), findsNothing);
 
       // 秒
       expect(find.text('00:'), findsOneWidget);
