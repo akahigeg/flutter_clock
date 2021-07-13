@@ -17,8 +17,8 @@ void main() {
       expect(find.text('STOP'), findsNothing);
 
       // STARTボタンをタップ
-      // await tester.tap(find.widgetWithText(TextButton, "START"));
-      await tester.tap(find.byKey(Key("start_button")));
+      await tester.tap(find.widgetWithText(TextButton, "START"));
+      // await tester.tap(find.byKey(Key("start_button")));
       await tester.pumpAndSettle();
 
       expect(find.text('START'), findsNothing);
