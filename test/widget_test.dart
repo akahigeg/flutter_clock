@@ -75,7 +75,7 @@ void main() {
     });
   });
 
-  testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
+  testWidgets('Timer is 04:00:00', (WidgetTester tester) async {
     await tester.runAsync(() async {
       await tester.pumpWidget(MaterialApp(
           home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
