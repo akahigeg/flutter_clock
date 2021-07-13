@@ -9,33 +9,32 @@ import 'package:flutter_clock/model/timer_model.dart';
 import 'package:flutter_clock/model/dot_indicator_model.dart';
 
 void main() {
-  // testWidgets('Toggle START and STOP button', (WidgetTester tester) async {
-  //   // Build our app and trigger a frame.
-  //   await tester.runAsync(() async {
-  //     await tester.pumpWidget(MaterialApp(
-  //         home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
+  testWidgets('Toggle START and STOP button', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.runAsync(() async {
+      await tester.pumpWidget(MaterialApp(
+          home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
 
-  //     expect(find.text('START'), findsOneWidget);
-  //     expect(find.text('STOP'), findsNothing);
+      expect(find.text('START'), findsOneWidget);
+      expect(find.text('STOP'), findsNothing);
 
-  //     // STARTボタンをタップ
-  //     await tester.tap(find.widgetWithText(TextButton, "START"));
-  //     // await tester.tap(find.byKey(Key("start_button")));
-  //     await tester.pumpAndSettle();
-  //     await tester.pump(new Duration(seconds: 3));
+      // STARTボタンをタップ
+      await tester.tap(find.widgetWithText(TextButton, "START"));
+      // await tester.tap(find.byKey(Key("start_button")));
+      await tester.pumpAndSettle();
 
-  //     expect(find.text('START'), findsNothing);
-  //     expect(find.text('STOP'), findsOneWidget);
+      expect(find.text('START'), findsNothing);
+      expect(find.text('STOP'), findsOneWidget);
 
-  //     await tester.tap(find.widgetWithText(TextButton, "STOP"));
-  //     await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(TextButton, "STOP"));
+      await tester.pumpAndSettle();
 
-  //     expect(find.text('START'), findsOneWidget);
-  //     expect(find.text('STOP'), findsNothing);
+      expect(find.text('START'), findsOneWidget);
+      expect(find.text('STOP'), findsNothing);
 
-  //     // 疑似タイマーだが止めておかないと動き続けてエラーがでるようだ？
-  //   });
-  // });
+      // 疑似タイマーだが止めておかないと動き続けてエラーがでるようだ？
+    });
+  });
 
   testWidgets('Switch each timer on swipe', (WidgetTester tester) async {
     // Build our app and trigger a frame.
