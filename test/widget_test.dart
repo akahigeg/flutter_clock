@@ -9,6 +9,12 @@ import 'package:flutter_clock/model/timer_model.dart';
 import 'package:flutter_clock/model/dot_indicator_model.dart';
 
 void main() {
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("timer1", "04:00:00");
+  });
+
   testWidgets('Toggle START and STOP button', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.runAsync(() async {
@@ -69,13 +75,6 @@ void main() {
     });
   });
 
-  setUpAll(() async {
-    SharedPreferences.setMockInitialValues({});
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("timer1", "04:00:00");
-  });
-
-  // なぜか突然動かなくなった！ アプリ側でこの部分変える可能性大なので深追いせずコメントアウトしておく
   testWidgets('Default Timer is 03:00:00', (WidgetTester tester) async {
     await tester.runAsync(() async {
       await tester.pumpWidget(MaterialApp(
@@ -93,7 +92,7 @@ void main() {
       // ミリ秒以下2桁
       expect(find.text('00'), findsOneWidget);
 
-      // Flutterのテストはタイマーが動かないのでタイマーによる変化はテストできない
+      // Flutterのウィジェットテストはタイマーが動かないのでタイマーによる変化はテストできない
     });
   });
 }
