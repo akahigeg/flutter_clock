@@ -43,14 +43,20 @@ void main() {
 
       await tester.pumpAndSettle();
       expect(find.text('timer1'), findsOneWidget);
+      expect(find.text('timer2'), findsNothing);
+      expect(find.text('timer3'), findsNothing);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
       expect(find.text('timer2'), findsOneWidget);
+      expect(find.text('timer1'), findsNothing);
+      expect(find.text('timer3'), findsNothing);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
       expect(find.text('timer3'), findsOneWidget);
+      expect(find.text('timer1'), findsNothing);
+      expect(find.text('timer2'), findsNothing);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
