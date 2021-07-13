@@ -43,8 +43,6 @@ class TimerModel extends ChangeNotifier {
 
     update();
 
-    print("restored");
-
     notifyListeners();
   }
 

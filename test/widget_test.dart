@@ -7,7 +7,7 @@ import 'package:flutter_clock/model/timer_model.dart';
 import 'package:flutter_clock/model/dot_indicator_model.dart';
 
 void main() {
-  testWidgets('toggle START and STOP button', (WidgetTester tester) async {
+  testWidgets('Toggle START and STOP button', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.runAsync(() async {
       await tester.pumpWidget(MaterialApp(
@@ -27,6 +27,33 @@ void main() {
       expect(find.text('START'), findsOneWidget);
 
       // 疑似タイマーだが止めておかないと動き続けてエラーがでるようだ？
+    });
+  });
+
+  testWidgets('Switch each timer on swipe', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.runAsync(() async {
+      await tester.pumpWidget(MaterialApp(
+          home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
+
+      await tester.pumpAndSettle();
+      expect(find.text('timer1'), findsOneWidget);
+
+      await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
+      await tester.pumpAndSettle();
+      expect(find.text('timer2'), findsOneWidget);
+
+      await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
+      await tester.pumpAndSettle();
+      expect(find.text('timer3'), findsOneWidget);
+
+      await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
+      await tester.pumpAndSettle();
+      expect(find.text('timer1'), findsOneWidget);
+
+      await tester.drag(find.byType(FlutterTimer), const Offset(500.0, 0.0));
+      await tester.pumpAndSettle();
+      expect(find.text('timer3'), findsOneWidget);
     });
   });
 
