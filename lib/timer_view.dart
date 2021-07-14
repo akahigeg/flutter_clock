@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
-import 'model/timer_model.dart';
+import 'model/timer_view_model.dart';
 import 'model/dot_indicator_model.dart';
 
 import 'view/timer/display.dart';
@@ -40,8 +40,8 @@ class FlutterTimer extends StatelessWidget {
                   },
                   onPageChanged: (int page) {
                     // アクティブなタイマーの切り替え
-                    Provider.of<TimerModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
-                    Provider.of<TimerModel>(context, listen: false).reset();
+                    Provider.of<TimerViewModel>(context, listen: false).timerId = "timer${page % _pages.length + 1}";
+                    Provider.of<TimerViewModel>(context, listen: false).reset();
 
                     // ドットインジケーターのポジションの更新
                     Provider.of<DotIndicatorModel>(context, listen: false).position = (page % _pages.length).toDouble();
@@ -91,7 +91,7 @@ class ArcPaint extends CustomPainter {
 class CircleIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return CustomPaint(
         size: const Size(300, 300),
         painter: ArcPaint((((timer.initialMin * 60) + timer.initialSec).toInt()) * 1000, (int.parse(timer.min) * 60 + int.parse(timer.sec)) * 1000 + int.parse(timer.msec) * 10),
@@ -103,7 +103,7 @@ class CircleIndicator extends StatelessWidget {
 class CircleIndicatorForEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return CustomPaint(size: const Size(300, 300), painter: ArcPaint(1, 1));
     });
   }
@@ -112,9 +112,9 @@ class CircleIndicatorForEdit extends StatelessWidget {
 class TimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Provider.of<TimerModel>(context, listen: false).restore();
+    Provider.of<TimerViewModel>(context, listen: false).restore();
 
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
           child: Stack(
         alignment: AlignmentDirectional.center,
@@ -123,7 +123,7 @@ class TimerWidget extends StatelessWidget {
           Container(child: timer.inEdit ? CircleIndicatorForEdit() : CircleIndicator(), margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
           // タイマー表示
           Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Text(Provider.of<TimerModel>(context, listen: false).timerId),
+            Text(Provider.of<TimerViewModel>(context, listen: false).timerId),
             timer.inEdit ? DisplayEdit() : Display(),
           ]),
           // ボタン

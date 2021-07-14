@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_clock/model/timer_model.dart';
+import 'package:flutter_clock/model/timer_view_model.dart';
 
 class ControlButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
           margin: EdgeInsets.only(top: 50.0),
           child: Row(
@@ -22,7 +22,7 @@ class ControlButtons extends StatelessWidget {
 class StartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
         width: 100,
         height: 50,
@@ -37,7 +37,7 @@ class StartButton extends StatelessWidget {
 class StopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
         width: 100,
         height: 50,
@@ -52,7 +52,7 @@ class StopButton extends StatelessWidget {
 class ResetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
         width: 100,
         height: 50,

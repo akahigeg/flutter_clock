@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_clock/model/timer_model.dart';
+import 'package:flutter_clock/model/timer_view_model.dart';
 
 import 'package:flutter_clock/timer_setting.dart';
 
 class EditButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
         child: FloatingActionButton(child: Icon(Icons.edit), onPressed: timer.startEdit, key: Key("edit_button")),
       );
@@ -18,7 +18,7 @@ class EditButton extends StatelessWidget {
 class DisplayEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -48,7 +48,7 @@ class DisplayEdit extends StatelessWidget {
   }
 
   Widget upDownButton(BuildContext context, String upOrDown, String minOrSec) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return ElevatedButton(
           child: Icon(upOrDown == "up" ? Icons.arrow_drop_up : Icons.arrow_drop_down),
           style: ElevatedButton.styleFrom(
@@ -77,7 +77,7 @@ class DisplayEdit extends StatelessWidget {
 class InEditButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerModel>(builder: (context, timer, child) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
           margin: EdgeInsets.only(top: 50.0),
           child: Row(
