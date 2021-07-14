@@ -49,29 +49,29 @@ void main() {
           home: MultiProvider(providers: [ChangeNotifierProvider(create: (context) => TimerViewModel()), ChangeNotifierProvider(create: (context) => DotIndicatorModel())], child: FlutterTimer())));
 
       await tester.pumpAndSettle();
-      expect(find.text('timer1'), findsOneWidget);
-      expect(find.text('timer2'), findsNothing);
-      expect(find.text('timer3'), findsNothing);
+      expect(find.text('TIMER-01'), findsOneWidget);
+      expect(find.text('TIMER-02'), findsNothing);
+      expect(find.text('TIMER-03'), findsNothing);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
-      expect(find.text('timer2'), findsOneWidget);
-      expect(find.text('timer1'), findsNothing);
-      expect(find.text('timer3'), findsNothing);
+      expect(find.text('TIMER-02'), findsOneWidget);
+      expect(find.text('TIMER-01'), findsNothing);
+      expect(find.text('TIMER-03'), findsNothing);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
-      expect(find.text('timer3'), findsOneWidget);
-      expect(find.text('timer1'), findsNothing);
-      expect(find.text('timer2'), findsNothing);
+      expect(find.text('TIMER-03'), findsOneWidget);
+      expect(find.text('TIMER-01'), findsNothing);
+      expect(find.text('TIMER-02'), findsNothing);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(-500.0, 0.0));
       await tester.pumpAndSettle();
-      expect(find.text('timer1'), findsOneWidget);
+      expect(find.text('TIMER-01'), findsOneWidget);
 
       await tester.drag(find.byType(FlutterTimer), const Offset(500.0, 0.0));
       await tester.pumpAndSettle();
-      expect(find.text('timer3'), findsOneWidget);
+      expect(find.text('TIMER-03'), findsOneWidget);
     });
   });
 
