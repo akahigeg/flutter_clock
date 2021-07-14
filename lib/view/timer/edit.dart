@@ -26,57 +26,63 @@ class DisplayEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TimerViewModel>(builder: (context, timer, child) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            upDownButton(context, "up", "min"),
-            Text(
-              '${timer.min}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            upDownButton(context, "down", "min"),
-          ]),
-          Text(
-            ':',
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            upDownButton(context, "up", "sec"),
-            Text(
-              '${timer.sec}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            upDownButton(context, "down", "sec"),
-          ]),
-        ],
-      );
+      return Container(
+          margin: EdgeInsets.only(top: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                upDownButton(context, "up", "min"),
+                Text(
+                  '${timer.min}',
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                upDownButton(context, "down", "min"),
+              ]),
+              Text(
+                ':',
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                upDownButton(context, "up", "sec"),
+                Text(
+                  '${timer.sec}',
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+                upDownButton(context, "down", "sec"),
+              ]),
+            ],
+          ));
     });
   }
 
   Widget upDownButton(BuildContext context, String upOrDown, String minOrSec) {
     return Consumer<TimerViewModel>(builder: (context, timer, child) {
-      return ElevatedButton(
-          child: Icon(upOrDown == "up" ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-          style: ElevatedButton.styleFrom(
-            shape: CircleBorder(),
-          ),
-          onPressed: () {
-            if (minOrSec == "min") {
-              timer.changeMin(TimerSetting.changeMin(timer.min, upOrDown));
-            } else {
-              timer.changeSec(TimerSetting.changeSec(timer.sec, upOrDown));
-            }
-          },
-          // TODO: 長押し 以下のコードでなぜか動かない
-          onLongPress: () {
-            print("longpress");
-            if (minOrSec == "min") {
-              timer.changeMin(TimerSetting.changeMin(timer.min, upOrDown));
-            } else {
-              timer.changeSec(TimerSetting.changeSec(timer.sec, upOrDown));
-            }
-          });
+      return Container(
+          width: 40,
+          height: 25,
+          child: ElevatedButton(
+              child: Icon(upOrDown == "up" ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blueGrey,
+                onPrimary: Colors.white,
+              ),
+              onPressed: () {
+                if (minOrSec == "min") {
+                  timer.changeMin(TimerSetting.changeMin(timer.min, upOrDown));
+                } else {
+                  timer.changeSec(TimerSetting.changeSec(timer.sec, upOrDown));
+                }
+              },
+              // TODO: 長押し 以下のコードでなぜか動かない
+              onLongPress: () {
+                print("longpress");
+                if (minOrSec == "min") {
+                  timer.changeMin(TimerSetting.changeMin(timer.min, upOrDown));
+                } else {
+                  timer.changeSec(TimerSetting.changeSec(timer.sec, upOrDown));
+                }
+              }));
     });
   }
 }
