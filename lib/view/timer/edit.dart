@@ -84,18 +84,24 @@ class InEditButtons extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                width: 100,
-                height: 50,
-                margin: EdgeInsets.only(right: 10.0),
-                color: Colors.greenAccent,
-                child: TextButton(child: Text('DONE'), onPressed: timer.finishEdit),
+                width: 70,
+                height: 70,
+                margin: EdgeInsets.only(right: 30.0),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.lightBlueAccent,
+                ),
+                child: TextButton(child: Text('UPDATE', style: TextStyle(color: Colors.black)), onPressed: timer.finishEdit),
               ),
               Container(
-                width: 100,
-                height: 50,
-                margin: EdgeInsets.only(left: 10.0),
-                color: Colors.greenAccent,
-                child: TextButton(child: Text('CANCEL'), onPressed: timer.cancelEdit),
+                width: 70,
+                height: 70,
+                margin: EdgeInsets.only(left: 30.0),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.redAccent,
+                ),
+                child: TextButton(child: Text('CANCEL', style: TextStyle(color: Colors.white)), onPressed: timer.cancelEdit),
               )
             ],
           ));
