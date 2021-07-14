@@ -10,7 +10,6 @@ import 'view/timer/display.dart';
 import 'view/timer/buttons.dart';
 import 'view/timer/edit.dart';
 
-import 'dart:math' as math;
 import 'package:vector_math/vector_math.dart' as vector_math;
 
 class FlutterTimer extends StatelessWidget {
