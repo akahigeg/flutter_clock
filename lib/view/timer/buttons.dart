@@ -24,11 +24,14 @@ class StartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
-        width: 100,
-        height: 50,
-        margin: EdgeInsets.only(right: 10.0),
-        color: Colors.lightGreenAccent,
-        child: TextButton(child: Text('START'), onPressed: timer.start, key: Key("start_button")),
+        width: 70,
+        height: 70,
+        margin: EdgeInsets.only(right: 30.0),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.lightGreenAccent,
+        ),
+        child: TextButton(child: Text('START', style: TextStyle(color: Colors.black)), onPressed: timer.start, key: Key("start_button")),
       );
     });
   }
@@ -39,11 +42,14 @@ class StopButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
-        width: 100,
-        height: 50,
-        margin: EdgeInsets.only(right: 10.0),
-        color: Colors.redAccent,
-        child: TextButton(child: Text('STOP'), onPressed: timer.stop, key: Key("stop_button")),
+        width: 70,
+        height: 70,
+        margin: EdgeInsets.only(right: 30.0),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.redAccent,
+        ),
+        child: TextButton(child: Text('STOP', style: TextStyle(color: Colors.white)), onPressed: timer.stop, key: Key("stop_button")),
       );
     });
   }
@@ -54,11 +60,14 @@ class ResetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
-        width: 100,
-        height: 50,
-        margin: EdgeInsets.only(left: 10.0),
-        color: Colors.greenAccent,
-        child: TextButton(child: Text('RESET'), onPressed: timer.reset, key: Key("reset_button")),
+        width: 70,
+        height: 70,
+        margin: EdgeInsets.only(left: 30.0),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.lightBlueAccent,
+        ),
+        child: TextButton(child: Text('RESET', style: TextStyle(color: Colors.black)), onPressed: timer.reset, key: Key("reset_button")),
       );
     });
   }

@@ -12,6 +12,8 @@ import 'view/timer/edit.dart';
 
 import 'package:vector_math/vector_math.dart' as vector_math;
 
+// TODO: 初回だけ？サークルインジケーター？タイマー実行時に表示がガタガタすることがある いったんSTOPしてSTARTすると直る
+
 class FlutterTimer extends StatelessWidget {
   FlutterTimer({Key? key}) : super(key: key);
 
