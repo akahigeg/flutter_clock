@@ -124,7 +124,7 @@ class TimerWidget extends StatelessWidget {
           Container(child: timer.inEdit ? CircleIndicatorForEdit() : CircleIndicator(), margin: EdgeInsets.fromLTRB(0, 0, 0, 0)),
           // タイマー表示
           Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Text(Provider.of<TimerViewModel>(context, listen: false).timerId),
+            TimerName(),
             timer.inEdit ? DisplayEdit() : Display(),
           ]),
           // EDITボタン
@@ -133,6 +133,18 @@ class TimerWidget extends StatelessWidget {
           Container(child: timer.inEdit ? InEditButtons() : ControlButtons(), margin: EdgeInsets.fromLTRB(0, 400, 0, 0))
         ],
       ));
+    });
+  }
+}
+
+class TimerName extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TimerViewModel>(builder: (context, timer, child) {
+      return Container(
+        alignment: AlignmentDirectional.center,
+        child: Text(Provider.of<TimerViewModel>(context, listen: false).timerId.replaceAll("timer", "TIMER-0"), style: TextStyle(color: Colors.white)),
+      );
     });
   }
 }
