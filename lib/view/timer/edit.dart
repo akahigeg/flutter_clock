@@ -9,7 +9,14 @@ class EditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimerViewModel>(builder: (context, timer, child) {
       return Container(
-        child: FloatingActionButton(child: Icon(Icons.edit), onPressed: timer.startEdit, key: Key("edit_button")),
+        width: 50,
+        height: 50,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.blueGrey,
+        ),
+        child: IconButton(icon: Icon(Icons.handyman_rounded), onPressed: timer.startEdit, key: Key("edit_button")),
+        // child: TextButton(child: Text('Edit', style: TextStyle(color: Colors.white)), onPressed: timer.startEdit, key: Key("edit_button")),
       );
     });
   }

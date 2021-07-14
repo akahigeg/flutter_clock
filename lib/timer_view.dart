@@ -29,7 +29,6 @@ class FlutterTimer extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(title: Text("Flutter Clock"), actions: <Widget>[]),
-        floatingActionButton: EditButton(),
         // TODO: ダークモード？
         body: IconTheme(
             data: IconThemeData(color: Colors.black.withOpacity(0.8)),
@@ -128,7 +127,9 @@ class TimerWidget extends StatelessWidget {
             Text(Provider.of<TimerViewModel>(context, listen: false).timerId),
             timer.inEdit ? DisplayEdit() : Display(),
           ]),
-          // ボタン
+          // EDITボタン
+          Container(child: timer.inEdit ? null : EditButton(), margin: EdgeInsets.fromLTRB(0, 180, 0, 0)),
+          // START/STOP/RESETボタン
           Container(child: timer.inEdit ? InEditButtons() : ControlButtons(), margin: EdgeInsets.fromLTRB(0, 400, 0, 0))
         ],
       ));
